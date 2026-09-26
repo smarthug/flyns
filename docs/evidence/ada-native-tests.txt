@@ -1,0 +1,382 @@
+TAP version 13
+# Subtest: Protected-write proof accepts the matching official EAC error inside wallet wrappers
+ok 1 - Protected-write proof accepts the matching official EAC error inside wallet wrappers
+  ---
+  duration_ms: 3.814875
+  type: 'test'
+  ...
+# Subtest: Generic reverts, code 3, network errors and malformed data are not permission evidence
+ok 2 - Generic reverts, code 3, network errors and malformed data are not permission evidence
+  ---
+  duration_ms: 0.400792
+  type: 'test'
+  ...
+# Subtest: EAC errors for another key, role or account are not proof for this probe
+ok 3 - EAC errors for another key, role or account are not proof for this probe
+  ---
+  duration_ms: 1.549
+  type: 'test'
+  ...
+# Subtest: Revocation checks effective rights and refuses to claim success when root authority remains (mock transport)
+ok 4 - Revocation checks effective rights and refuses to claim success when root authority remains (mock transport)
+  ---
+  duration_ms: 0.410125
+  type: 'test'
+  ...
+# Subtest: Keccak-256 standard empty vector
+ok 5 - Keccak-256 standard empty vector
+  ---
+  duration_ms: 1.257375
+  type: 'test'
+  ...
+# Subtest: Keccak-256 abc vector
+ok 6 - Keccak-256 abc vector
+  ---
+  duration_ms: 1.337416
+  type: 'test'
+  ...
+# Subtest: Ethereum function selector known vector
+ok 7 - Ethereum function selector known vector
+  ---
+  duration_ms: 0.551542
+  type: 'test'
+  ...
+# Subtest: ENS namehash known eth vector
+ok 8 - ENS namehash known eth vector
+  ---
+  duration_ms: 2.004792
+  type: 'test'
+  ...
+# Subtest: DNS wire encoding includes byte lengths and terminator
+ok 9 - DNS wire encoding includes byte lengths and terminator
+  ---
+  duration_ms: 0.157083
+  type: 'test'
+  ...
+# Subtest: Normalization is intentionally ASCII-only, not Unicode approximation
+ok 10 - Normalization is intentionally ASCII-only, not Unicode approximation
+  ---
+  duration_ms: 0.219292
+  type: 'test'
+  ...
+# Subtest: Strict input hex validation
+ok 11 - Strict input hex validation
+  ---
+  duration_ms: 0.072917
+  type: 'test'
+  ...
+# Subtest: Static ABI matches fixed known layout
+ok 12 - Static ABI matches fixed known layout
+  ---
+  duration_ms: 0.403875
+  type: 'test'
+  ...
+# Subtest: String ABI uses 32-byte offset, byte length and padding
+ok 13 - String ABI uses 32-byte offset, byte length and padding
+  ---
+  duration_ms: 0.156
+  type: 'test'
+  ...
+# Subtest: Nested resolver initializer round trip
+ok 14 - Nested resolver initializer round trip
+  ---
+  duration_ms: 1.891375
+  type: 'test'
+  ...
+# Subtest: Static getState tuple round trip
+ok 15 - Static getState tuple round trip
+  ---
+  duration_ms: 0.339167
+  type: 'test'
+  ...
+# Subtest: ABI rejects bad addresses, arity and overflowing uint64
+ok 16 - ABI rejects bad addresses, arity and overflowing uint64
+  ---
+  duration_ms: 0.268417
+  type: 'test'
+  ...
+# Subtest: ABI rejects truncated and invalid bool results
+ok 17 - ABI rejects truncated and invalid bool results
+  ---
+  duration_ms: 0.278334
+  type: 'test'
+  ...
+# Subtest: Key permission resource is key keccak, not agent namehash
+ok 18 - Key permission resource is key keccak, not agent namehash
+  ---
+  duration_ms: 0.262584
+  type: 'test'
+  ...
+# Subtest: Circuit validation rejects invented invalid edge indices
+ok 19 - Circuit validation rejects invented invalid edge indices
+  ---
+  duration_ms: 1.26775
+  type: 'test'
+  ...
+# Subtest: Circuit validation rejects duplicate directed edges
+ok 20 - Circuit validation rejects duplicate directed edges
+  ---
+  duration_ms: 1.242291
+  type: 'test'
+  ...
+# Subtest: Separate identical seeded runtimes are deterministic
+ok 21 - Separate identical seeded runtimes are deterministic
+  ---
+  duration_ms: 26.245125
+  type: 'test'
+  ...
+# Subtest: Each agent owns an independent neural array and PRNG state
+ok 22 - Each agent owns an independent neural array and PRNG state
+  ---
+  duration_ms: 1.266959
+  type: 'test'
+  ...
+# Subtest: Measured circuit edges affect this engineered model, not a biological validation
+ok 23 - Measured circuit edges affect this engineered model, not a biological validation
+  ---
+  duration_ms: 12.82675
+  type: 'test'
+  ...
+# Subtest: Canonical object order is stable
+ok 24 - Canonical object order is stable
+  ---
+  duration_ms: 0.090208
+  type: 'test'
+  ...
+# Subtest: Canonical JSON rejects nonfinite values
+ok 25 - Canonical JSON rejects nonfinite values
+  ---
+  duration_ms: 0.063375
+  type: 'test'
+  ...
+# Subtest: Model digest includes graph and engine configuration
+ok 26 - Model digest includes graph and engine configuration
+  ---
+  duration_ms: 4.662584
+  type: 'test'
+  ...
+# Subtest: Verified checkpoint preserves next 100 exact simulation steps
+ok 27 - Verified checkpoint preserves next 100 exact simulation steps
+  ---
+  duration_ms: 16.690208
+  type: 'test'
+  ...
+# Subtest: Tampered checkpoint bytes are rejected
+ok 28 - Tampered checkpoint bytes are rejected
+  ---
+  duration_ms: 5.87725
+  type: 'test'
+  ...
+# Subtest: Different agent identity is rejected
+ok 29 - Different agent identity is rejected
+  ---
+  duration_ms: 2.897292
+  type: 'test'
+  ...
+# Subtest: Different model is rejected
+ok 30 - Different model is rejected
+  ---
+  duration_ms: 2.308125
+  type: 'test'
+  ...
+# Subtest: Stale checkpoint sequence is rejected
+ok 31 - Stale checkpoint sequence is rejected
+  ---
+  duration_ms: 2.431833
+  type: 'test'
+  ...
+# Subtest: Pointer and snapshot sequence must agree
+ok 32 - Pointer and snapshot sequence must agree
+  ---
+  duration_ms: 2.316542
+  type: 'test'
+  ...
+# Subtest: Checkpoint validation catches dimensions and poisoned neural values
+ok 33 - Checkpoint validation catches dimensions and poisoned neural values
+  ---
+  duration_ms: 2.276083
+  type: 'test'
+  ...
+# Subtest: Checkpoint rejects zero PRNG, unsupported schema and infinite pose
+ok 34 - Checkpoint rejects zero PRNG, unsupported schema and infinite pose
+  ---
+  duration_ms: 2.189667
+  type: 'test'
+  ...
+# Subtest: Checkpoint URLs must be HTTPS or same-origin localhost
+ok 35 - Checkpoint URLs must be HTTPS or same-origin localhost
+  ---
+  duration_ms: 0.147125
+  type: 'test'
+  ...
+# Subtest: Local rights: runtime cannot create identities
+ok 36 - Local rights: runtime cannot create identities
+  ---
+  duration_ms: 1.35325
+  type: 'test'
+  ...
+# Subtest: Local rights: delegation applies to exactly one resolver
+ok 37 - Local rights: delegation applies to exactly one resolver
+  ---
+  duration_ms: 0.359125
+  type: 'test'
+  ...
+# Subtest: Local rights: checkpoint grant does not permit model changes
+ok 38 - Local rights: checkpoint grant does not permit model changes
+  ---
+  duration_ms: 0.1395
+  type: 'test'
+  ...
+# Subtest: Local rights: revoke blocks subsequent canonical writes
+ok 39 - Local rights: revoke blocks subsequent canonical writes
+  ---
+  duration_ms: 1.0775
+  type: 'test'
+  ...
+# Subtest: Local aliases follow current records, not a copied snapshot
+ok 40 - Local aliases follow current records, not a copied snapshot
+  ---
+  duration_ms: 0.880209
+  type: 'test'
+  ...
+# Subtest: Local runtime cannot mint or relink aliases
+ok 41 - Local runtime cannot mint or relink aliases
+  ---
+  duration_ms: 0.124417
+  type: 'test'
+  ...
+# Subtest: Live RPC guard rejects wrong chain before signing
+ok 42 - Live RPC guard rejects wrong chain before signing
+  ---
+  duration_ms: 0.380417
+  type: 'test'
+  ...
+# Subtest: Live RPC guard rejects account switches before signing
+ok 43 - Live RPC guard rejects account switches before signing
+  ---
+  duration_ms: 0.654167
+  type: 'test'
+  ...
+# Subtest: Failed eth_call preflight is not submitted or counted as a mined revert
+ok 44 - Failed eth_call preflight is not submitted or counted as a mined revert
+  ---
+  duration_ms: 1.367625
+  type: 'test'
+  ...
+# Subtest: Live RPC only marks confirmed after success receipt (mock transport)
+ok 45 - Live RPC only marks confirmed after success receipt (mock transport)
+  ---
+  duration_ms: 0.674083
+  type: 'test'
+  ...
+# Subtest: Reverted receipt is never marked successful (mock transport)
+ok 46 - Reverted receipt is never marked successful (mock transport)
+  ---
+  duration_ms: 1.105125
+  type: 'test'
+  ...
+# Subtest: Server health reports the actual storage backend
+ok 47 - Server health reports the actual storage backend
+  ---
+  duration_ms: 17.785375
+  type: 'test'
+  ...
+# Subtest: Server stores immutable bytes and returns their actual SHA-256
+ok 48 - Server stores immutable bytes and returns their actual SHA-256
+  ---
+  duration_ms: 9.77875
+  type: 'test'
+  ...
+# Subtest: Repeated content uploads are idempotent
+ok 49 - Repeated content uploads are idempotent
+  ---
+  duration_ms: 5.819709
+  type: 'test'
+  ...
+# Subtest: Server rejects foreign-origin uploads
+ok 50 - Server rejects foreign-origin uploads
+  ---
+  duration_ms: 2.529375
+  type: 'test'
+  ...
+# Subtest: Server rejects invalid checkpoint JSON and schemas
+ok 51 - Server rejects invalid checkpoint JSON and schemas
+  ---
+  duration_ms: 3.371125
+  type: 'test'
+  ...
+# Subtest: Secrets and non-asset paths are never served
+ok 52 - Secrets and non-asset paths are never served
+  ---
+  duration_ms: 7.649916
+  type: 'test'
+  ...
+# Subtest: Served HTML has a restrictive script CSP
+ok 53 - Served HTML has a restrictive script CSP
+  ---
+  duration_ms: 1.988375
+  type: 'test'
+  ...
+# Subtest: Existing Ada reads resolve through the verified proxy at a single Sepolia block (mock RPC)
+ok 54 - Existing Ada reads resolve through the verified proxy at a single Sepolia block (mock RPC)
+  ---
+  duration_ms: 19.313959
+  type: 'test'
+  ...
+# Subtest: Wrong chain, redirected name, changed implementation and wrong decoded key role stop reads
+ok 55 - Wrong chain, redirected name, changed implementation and wrong decoded key role stop reads
+  ---
+  duration_ms: 5.780209
+  type: 'test'
+  ...
+# Subtest: Root roles, status admin and protected-key access block status-only claims and writes
+ok 56 - Root roles, status admin and protected-key access block status-only claims and writes
+  ---
+  duration_ms: 54.013709
+  type: 'test'
+  ...
+# Subtest: Permission probes never accept generic network/revert failures as denial
+ok 57 - Permission probes never accept generic network/revert failures as denial
+  ---
+  duration_ms: 11.362917
+  type: 'test'
+  ...
+# Subtest: Status grant encodes exactly one text key for the expected runtime; repeat grants skip signing
+ok 58 - Status grant encodes exactly one text key for the expected runtime; repeat grants skip signing
+  ---
+  duration_ms: 15.197084
+  type: 'test'
+  ...
+# Subtest: Only the configured owner can grant, and it must retain the admin role
+ok 59 - Only the configured owner can grant, and it must retain the admin role
+  ---
+  duration_ms: 5.28875
+  type: 'test'
+  ...
+# Subtest: Only the runtime can update status; identical values do not create duplicate transactions
+ok 60 - Only the runtime can update status; identical values do not create duplicate transactions
+  ---
+  duration_ms: 15.132
+  type: 'test'
+  ...
+# Subtest: Revoked access, wallet changes, invalid status and concurrent model changes are surfaced
+ok 61 - Revoked access, wallet changes, invalid status and concurrent model changes are surfaced
+  ---
+  duration_ms: 14.66025
+  type: 'test'
+  ...
+# Subtest: Expected-account connection reopens wallet selection and rejects the wrong account
+ok 62 - Expected-account connection reopens wallet selection and rejects the wrong account
+  ---
+  duration_ms: 0.273709
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 62
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 211.557791

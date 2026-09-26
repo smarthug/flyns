@@ -5,11 +5,11 @@
 
 An agent's simulated body is temporary; its canonical name identifies the model, checkpoint and authority that another runtime must verify. Hatch separate agents, observe real computed state, publish a checkpoint, resolve it by name, start a fresh engine and revoke its writer.
 
-**Delivery status:** the dependency-free local rehearsal, native tests and isolated browser interactions have been exercised. The ENSv2 Sepolia adapter is implemented against the documented beta interfaces but has **not** been exercised against deployed contracts with funded wallets. No public deployment or GitHub repository is included. Optional Three.js rendering and the larger data import require network installation and remain unverified here. This is a working local prototype plus an unverified live integration, not an already-qualified competition submission.
+**Delivery status (2026-09-27 JST):** the local rehearsal now passes native tests and a real Chromium → Node HTTP → disk test, including Three.js and the imported 80-neuron circuit. Five configured Sepolia addresses were checked against official artifacts and for deployed code; three read-only contract calls were verified. User-approved Sepolia transactions now prove a **status-only grant and a delegated `exploring` update for `ada.flyns.eth`**, with a matching protected-model denial (`eth_call`). Signed checkpoint publication, revocation and the full registration/restore lifecycle remain unverified. [The source repository is public](https://github.com/smarthug/flyns). Public HTTPS hosting and the final demo video remain outstanding. See [the evidence report](docs/VALIDATION.md).
 
 ## Run
 
-Node.js **22.16 or newer**. No npm installation is required for the core application.
+Node.js **22.16 or newer**. No npm installation is required to run the application: reviewed browser dependencies and licenses are committed in `vendor/`. Development tools are installed with `npm ci`.
 
 ```sh
 npm run dev
@@ -21,25 +21,26 @@ npm run build
 
 The default mode is prominently marked **LOCAL REHEARSAL**. `.demo` names and its owner/runtime actor selector are local simulations, not ENS registrations or wallets. Rehearsal stores identity metadata in browser localStorage; snapshots use a real content-addressed Node file store. Reloading restarts observation from a seed until you explicitly Resolve & resume a published checkpoint.
 
-A small selected-edge fixture ships with **12 measured MaleCNS-derived neurons and 26 selected directed edges**. It is not the full fly brain, not an induced subgraph, and not a trained biological controller. Numeric dynamics, sensory injection, motor decoding and procedural body animation are our modeling assumptions. There is no learning or LLM.
+The active graph contains **80 MaleCNS-derived neurons and 1,296 directed edges**, imported from a pinned upstream circuit. The original **12-neuron / 26-edge** fallback is preserved as `data/circuit-microfixture.json`. It is not the full fly brain, not an induced subgraph, and not a trained biological controller. Numeric dynamics, sensory injection, motor decoding and procedural body animation are our modeling assumptions. There is no learning or LLM.
 
 ### Optional Three.js view
 
 ```sh
+npm ci
 npm run setup:3d
-# Reload, then enable "Three.js 3D".
+# Regenerates the included bundle. Enable "Three.js 3D" in the app.
 ```
 
-The default renderer is Canvas 2D. The optional Three.js 0.180.0 renderer uses original procedural meshes and the same simulation state. It does not replace the neural simulation. Installing it copies the package's local ES modules and MIT license, not external fonts or body assets.
+The default renderer is Canvas 2D. The optional Three.js 0.180.0 renderer uses original procedural meshes and the same simulation state. It does not replace the neural simulation. The setup script copies the package's local ES modules and MIT license, not external fonts or body assets.
 
-### Optional larger measured circuit
+### Reproduce the measured-circuit import
 
 ```sh
 npm run data:fetch
 npm test
 ```
 
-Fetches the pinned **80-neuron** circuit data from cobanov/flyjump, not that project's application code or pretrained readout. See `docs/SOURCES.md`. The original microfixture is preserved. The model digest changes; old snapshots require the identical old graph and engine. Use new names after changing the active graph. This still is not a whole-brain model.
+Re-fetches the active pinned **80-neuron** circuit data from cobanov/flyjump, not that project's application code or pretrained readout. See `docs/SOURCES.md`. The original microfixture is preserved. Changing from the microfixture changes the model digest; old snapshots require the identical old graph and engine. Local rehearsal preserves old identities and creates new names for the new model. Use new names after changing the active graph. This still is not a whole-brain model.
 
 ## The ENSv2 contribution
 
@@ -47,7 +48,7 @@ Fetches the pinned **80-neuron** circuit data from cobanov/flyjump, not that pro
 |---|---|
 | Hierarchical UserRegistry | Each fly is a registered name with its own child namespace |
 | Per-agent Permissioned Resolver | Isolate one fly's record permissions from all other flies |
-| Enhanced Access Control | Delegate only the `flyns.checkpoint` text-key setter |
+| Enhanced Access Control | Separate status-only and checkpoint-only text-key capabilities |
 | Universal Resolver | Discover canonical identity and checkpoint from an input name |
 | Record aliasing + wildcard resolution | `live.ada.parent.eth` resolves the canonical agent bundle without minting another name |
 | Verifiable Factory | Deploy official registry/resolver proxies and check their implementation |
@@ -67,6 +68,19 @@ The onchain checkpoint is **one atomic text value**, not separate URI and digest
 
 Full neural state, PRNG, body pose, environment and tick remain offchain. Restore verifies their bytes, model, stable agent ID and sequence before constructing a new engine. A content hash proves byte integrity, **not** scientifically correct computation or biological memory.
 
+## Existing Ada on Sepolia
+
+The **Ada on Sepolia** panel integrates the existing `ada.flyns.eth` Resolver without deploying or registering it again. Click **Read live Ada** to resolve current records through the Universal Resolver; no wallet is needed. **Verify status / model permissions** runs read-only calls from the configured runtime address.
+
+Connect **Ada runtime** to update `flyns.status` through your wallet. Owner controls can grant that key alone if it is missing. Already active grants and unchanged status values do not send duplicate transactions. Every write rechecks the exact account, Sepolia chain, canonical resolver, implementation and effective permissions. No key or seed phrase is stored.
+
+The existing model label (`male-cns-v1`) is **not** the simulator's model hash. Ada currently lacks the checkpoint identity fields used by Save & Resume, so it is not silently imported into the simulated colony. Status permission does not grant checkpoint access. See [the integration and actual receipts](docs/ADA-SEPOLIA.md).
+
+```sh
+npm ci
+npm run verify:ada  # read-only; rechecks both mined transactions and current permissions
+```
+
 ## Sepolia setup — required before prize submission
 
 Read `docs/ENS-INTEGRATION.md` and `docs/DEMO.md` first. Re-check the official beta addresses and interfaces in `public/config.json` / `src/ens/protocol.mjs` before using a wallet.
@@ -81,9 +95,10 @@ An optional **read-only** code-presence check:
 
 ```sh
 SEPOLIA_RPC_URL='https://YOUR-RPC' npm run verify:sepolia
+SEPOLIA_RPC_URL='https://YOUR-RPC' npm run verify:sepolia:reads
 ```
 
-It neither deploys contracts nor proves ABI compatibility. No private keys are stored in the application. The live RPC transport relies on an injected EIP-1193 wallet. Its small ABI/Keccak implementation is locally vector-tested, not a replacement for a production audited web3 SDK. Only ASCII ENS labels and onchain FlyNS records are supported; external CCIP-Read gateways are out of scope.
+The first command checks code presence only. The second verifies selected read-only ABI calls and records raw readbacks; neither deploys contracts or proves the signed lifecycle. No private keys are stored in the application. The live RPC transport relies on an injected EIP-1193 wallet. ABI encoding and Keccak use pinned viem primitives, bundled for the browser; live calls use generated official ABI entries from a pinned ENS deployment commit. Reproduce them with `npm ci`, `npm run setup:web3`, and `npm run sync:ens-abi`. The wallet transport and application remain unaudited. Only ASCII ENS labels and onchain FlyNS records are supported; external CCIP-Read gateways are out of scope.
 
 ## Public hosting
 
@@ -93,7 +108,7 @@ Use a Node host with a durable writable volume behind HTTPS. **Static `dist/` al
 HOST=0.0.0.0 PUBLIC_ORIGIN=https://YOUR-HOST PORT=4173 npm start
 ```
 
-Or use the included Dockerfile with `PUBLIC_ORIGIN` and a volume mounted at `/app/.storage`. Do not point a submitted ENS record at localhost: judges and other devices cannot fetch it. The server uses a 128 KiB object limit, 20 uploads/minute/IP and a 32 MiB quota. Add authenticated uploads, replication and an object-store/IPFS adapter before broader public use. No Pinata credentials or account are assumed.
+Or use the included Dockerfile with `PUBLIC_ORIGIN` and a volume mounted at `/app/.storage`. [The deployment guide](docs/DEPLOYMENT.md) includes a prepared Compose configuration with Caddy HTTPS and persistent volumes; it has not yet been exercised on a public host. Do not point a submitted ENS record at localhost: judges and other devices cannot fetch it. The server uses a 128 KiB object limit, 20 uploads/minute/IP and a 32 MiB quota. Add authenticated uploads, replication and an object-store/IPFS adapter before broader public use. No Pinata credentials or account are assumed.
 
 ## Structure
 
@@ -101,13 +116,14 @@ Or use the included Dockerfile with `PUBLIC_ORIGIN` and a volume mounted at `/ap
 src/app.mjs                 UI orchestration; publish/resolve/fresh-engine restore
 src/ens/live.mjs            Official ENSv2 calls, factory proxies, roles, aliases
 src/ens/local.mjs           Explicitly labeled local rehearsal adapter
-src/ens/protocol.mjs        ABI signatures, role bitmaps, DNS encoding
+src/ens/protocol.mjs        Official ABI descriptors, role bitmaps, DNS encoding
+src/ens/official-abis.mjs   Generated pinned official ENS ABI entries
 src/ens/rpc.mjs             Chain/account guards, preflight and receipt polling
 src/sim/                    Measured graph, original engine, checkpoint validation
 src/ui/                     Canvas and optional Three.js observatories
 server.mjs                  Static assets + bounded content-addressed storage
 scripts/                    Build, syntax check, pinned data import, Sepolia check
-tests/                      Native tests + isolated browser smoke harness
+tests/                      Native tests + real HTTP browser test + historical isolated harness
 docs/                       Strategy, trust boundaries, judging script, submission
 AGENTS.md                   Instructions to continue this project in Codex
 ```
@@ -117,5 +133,7 @@ AGENTS.md                   Instructions to continue this project in Codex
 The MVP deliberately uses expiring, **non-transferable** names to avoid pretending a registry-token transfer also transfers a separately controlled resolver. Parent namespace operators still matter; this is not a claim of permanent independence from every ancestor. Revoking a writer blocks future canonical ENS updates. It cannot kill a process, delete downloaded snapshots or enforce one living copy. Concurrent legitimate writers are last-writer-wins, not consensus or compare-and-swap.
 
 See `docs/SECURITY.md`, `docs/VALIDATION.md`, `docs/SUBMISSION.md` and the Korean plan `docs/PROJECT.ko.md`.
+
+For browser verification: `npm ci`, `npx playwright install chromium --only-shell`, then `npm run test:browser`. The CI workflow runs the same checks.
 
 Original application code: MIT. MaleCNS-derived data: CC BY 4.0 with attribution in `data/ATTRIBUTION.md`. No upstream template application, body mesh or pretrained checkpoint is redistributed.

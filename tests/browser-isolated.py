@@ -8,7 +8,7 @@ OUT=ROOT/'artifacts'
 OUT.mkdir(exist_ok=True)
 async def main():
  async with async_playwright() as p:
-  browser=await p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+  browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])
   page=await browser.new_page(viewport={'width':1536,'height':1100},device_scale_factor=1)
   errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   html=(ROOT/'index.html').read_text();html=re.sub(r'<link[^>]*>','',html);html=re.sub(r'<script[^>]*>.*?</script>','',html)
@@ -34,7 +34,7 @@ async def main():
       throw new Error('No network access in isolated browser test: '+u);
     };
   }''',{'graph':graph,'config':config})
-  files={str(f.relative_to(ROOT)):f.read_text() for f in (ROOT/'src').rglob('*.mjs')}
+  files={str(f.relative_to(ROOT)):f.read_text() for base in ['src','vendor/web3'] for f in (ROOT/base).rglob('*.mjs')}
   await page.evaluate(r'''async files=>{
     const cache={};function make(path){if(cache[path])return cache[path];let src=files[path];if(!src)throw new Error('Missing module '+path);
       src=src.replace(/from\s+(['"])(\.\.?\/[^'"]+)\1/g,(all,quote,rel)=>{const target=new URL(rel,'https://module.test/'+path).pathname.slice(1);return 'from '+quote+make(target)+quote;});

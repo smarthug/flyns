@@ -1,6 +1,11 @@
-node_modules
-dist
 .git
-.storage
 .env
+.env.*
+!.env.example
+node_modules
 artifacts
+dist
+.storage
+tests
+.DS_Store
+*.log

@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: "4173"
+      PUBLIC_ORIGIN: https://${FLYNS_DOMAIN:?Set FLYNS_DOMAIN to your public hostname}
+      CHECKPOINT_DIR: /app/.storage/checkpoints
+    volumes:
+      - checkpoints:/app/.storage
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  https:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      FLYNS_DOMAIN: ${FLYNS_DOMAIN:?Set FLYNS_DOMAIN to your public hostname}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+volumes:
+  checkpoints:
+  caddy_data:
+  caddy_config:

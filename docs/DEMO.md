@@ -38,7 +38,7 @@ Create/resolve `live.ada.YOUR-PARENT.eth`. Show that it returns the same canonic
 
 “ENSv2 is not a label on this demo. It defines where the agent is found and which runtime may update its canonical state. We started with a small, inspectable fly controller; the portable identity pattern is not tied to that controller.”
 
-Show the public repository, source attribution and verification artifacts. The 12-neuron fixture is a narrow prototype; do not call it a whole-brain emulation or learned biological memory.
+Show the public repository, source attribution and verification artifacts. The active 80-neuron selected circuit (with the original 12-neuron fallback preserved) is a narrow prototype; do not call it a whole-brain emulation or learned biological memory.
 
 ## Local-only rehearsal
 

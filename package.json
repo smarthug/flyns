@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Portable connectome agents with ENSv2 namespaces and revocable checkpoint writers",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.16"
   },
   "scripts": {
     "dev": "node --env-file-if-exists=.env server.mjs",
@@ -15,7 +15,18 @@
     "check": "node scripts/check.mjs",
     "data:fetch": "node scripts/fetch-connectome.mjs",
     "verify:sepolia": "node scripts/verify-sepolia.mjs",
-    "setup:3d": "npm install --no-save --package-lock=false three@0.180.0 && node scripts/vendor-three.mjs"
+    "setup:3d": "node scripts/vendor-three.mjs",
+    "setup:web3": "node scripts/vendor-web3.mjs",
+    "sync:ens-abi": "node scripts/sync-ens-abi.mjs",
+    "test:browser": "node tests/browser-http.mjs",
+    "verify:sepolia:reads": "node scripts/verify-sepolia-reads.mjs",
+    "verify:ada": "node scripts/verify-ada-sepolia.mjs"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0",
+    "three": "0.180.0",
+    "viem": "2.56.9"
+  }
 }

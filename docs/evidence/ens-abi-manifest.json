@@ -1,0 +1,65 @@
+{
+  "commit": "71a3b7339dbc55ab47667abdfe8303bac4f4c24e",
+  "sources": [
+    {
+      "name": "VerifiableFactory",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/VerifiableFactory.json",
+      "address": "0x9e726eb570beb6bceb495ab8cda7df517d4e841c",
+      "sha256": "d27bb74e53a9dc9cf3b095b93514d29627d8605319d4979f060df99dd24c3bfe"
+    },
+    {
+      "name": "ETHRegistry",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/ETHRegistry.json",
+      "address": "0x657ea849311d3d5823348dded7c2aaafb3ede09e",
+      "sha256": "e56c92bbc52d7aa1b1146b435e058373c7a6f55236897c2db3ec2d41e60daff9"
+    },
+    {
+      "name": "UserRegistryImpl",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/UserRegistryImpl.json",
+      "address": "0xa80338aaa8d23831cea25e858d1774534abb0263",
+      "sha256": "61a7d9e1ffdc14c39fd6459be1d3f4432e02ba95141289102ea400db0eeff6a2"
+    },
+    {
+      "name": "PermissionedResolverImpl",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/PermissionedResolverImpl.json",
+      "address": "0x14f09fd05d4585759e54844dc9b00147131cf243",
+      "sha256": "c6f8029d136023318294dec5512880d23fb31d628c616a47a9d2206551fe589a"
+    },
+    {
+      "name": "UpgradableUniversalResolverProxy",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/UpgradableUniversalResolverProxy.json",
+      "address": "0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe",
+      "sha256": "fc1d9d5c47808657786d105d40fe40b935a6702357d193f48bf6bd32fb4348ca"
+    },
+    {
+      "name": "UniversalResolverV2",
+      "url": "https://raw.githubusercontent.com/ensdomains/contracts-v2/71a3b7339dbc55ab47667abdfe8303bac4f4c24e/contracts/deployments/sepolia/UniversalResolverV2.json",
+      "address": "0x5d25c1d6acbb71b7a28aa7899618a3412a8303e3",
+      "sha256": "ae3b292f97b47884c1f37d15345856059f9c065be924461f4ef7e01e4f9ac4ec"
+    }
+  ],
+  "functions": [
+    "deploy",
+    "verify",
+    "initRegistry",
+    "initResolver",
+    "register",
+    "setParent",
+    "setSubregistry",
+    "state",
+    "subregistry",
+    "resolver",
+    "roles",
+    "hasRoles",
+    "hasRootRoles",
+    "setText",
+    "setAddress",
+    "grantSetter",
+    "revoke",
+    "link",
+    "resolve",
+    "decodeSetter",
+    "rootRegistry"
+  ],
+  "profiles": "ENSIP-1/5; https://docs.ens.domains/ensv2/permissioned-resolver/"
+}

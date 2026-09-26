@@ -1,0 +1,283 @@
+{
+  "version": "flyns-malecns-selected-12-v1",
+  "provenance": {
+    "dataset": "MaleCNS v1.0",
+    "license": "CC-BY-4.0",
+    "source": "https://github.com/cobanov/flyjump/blob/c08c86bc18efd8125964b1d2ca4fc1df59700f30/src/data/connectome.json",
+    "sourceCommit": "c08c86bc18efd8125964b1d2ca4fc1df59700f30",
+    "description": "Manually transcribed selection of 12 recorded nodes and 26 recorded directed edges from the source extract. This is a selected-edge microcircuit, NOT the induced subgraph, whole brain, visual-system model, or trained controller.",
+    "creators": "FlyEM / HHMI Janelia, University of Cambridge, MRC LMB, Google Research; extraction by Mert Cobanov",
+    "changes": "Selected nodes/edges and remapped array indices. Raw synaptic counts retained. Node signs, sensory injection, rate dynamics, and motor readout are modeling assumptions. No upstream software or artwork copied."
+  },
+  "inputTargets": [
+    3,
+    4,
+    6
+  ],
+  "nodes": [
+    {
+      "id": 10010,
+      "type": "DNp01",
+      "position": [
+        58238,
+        22234,
+        36276
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10030,
+      "type": "pIP1",
+      "position": [
+        56562,
+        17820,
+        34706
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10038,
+      "type": "pIP1",
+      "position": [
+        39330,
+        19195,
+        35528
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10063,
+      "type": "DNp27",
+      "position": [
+        34200,
+        17553,
+        36204
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10074,
+      "type": "PVLP010",
+      "position": [
+        62869,
+        11945,
+        19668
+      ],
+      "sign": -1,
+      "role": "interneuron"
+    },
+    {
+      "id": 10145,
+      "type": "PVLP130",
+      "position": [
+        63384,
+        22340,
+        35354
+      ],
+      "sign": -1,
+      "role": "interneuron"
+    },
+    {
+      "id": 10147,
+      "type": "LHAD1g1",
+      "position": [
+        73058,
+        11486,
+        25246
+      ],
+      "sign": -1,
+      "role": "interneuron"
+    },
+    {
+      "id": 10197,
+      "type": "DNp02",
+      "position": [
+        58903,
+        20337,
+        35171
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10228,
+      "type": "DNp06",
+      "position": [
+        59023,
+        21254,
+        36260
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10234,
+      "type": "DNp35",
+      "position": [
+        59209,
+        19523,
+        35768
+      ],
+      "sign": 1,
+      "role": "output"
+    },
+    {
+      "id": 10361,
+      "type": "DNg40",
+      "position": [
+        51581,
+        47658,
+        27161
+      ],
+      "sign": -1,
+      "role": "interneuron"
+    },
+    {
+      "id": 10783,
+      "type": "DNp09",
+      "position": [
+        58758,
+        21229,
+        37805
+      ],
+      "sign": 1,
+      "role": "output"
+    }
+  ],
+  "edges": [
+    [
+      0,
+      4,
+      17
+    ],
+    [
+      0,
+      6,
+      2
+    ],
+    [
+      0,
+      7,
+      1
+    ],
+    [
+      0,
+      8,
+      3
+    ],
+    [
+      0,
+      10,
+      2
+    ],
+    [
+      1,
+      7,
+      31
+    ],
+    [
+      1,
+      11,
+      2
+    ],
+    [
+      3,
+      4,
+      3
+    ],
+    [
+      3,
+      7,
+      1
+    ],
+    [
+      3,
+      8,
+      1
+    ],
+    [
+      3,
+      9,
+      2
+    ],
+    [
+      3,
+      10,
+      2
+    ],
+    [
+      3,
+      11,
+      8
+    ],
+    [
+      4,
+      0,
+      414
+    ],
+    [
+      4,
+      1,
+      15
+    ],
+    [
+      4,
+      5,
+      1
+    ],
+    [
+      4,
+      6,
+      40
+    ],
+    [
+      4,
+      7,
+      68
+    ],
+    [
+      4,
+      8,
+      426
+    ],
+    [
+      4,
+      9,
+      55
+    ],
+    [
+      4,
+      10,
+      213
+    ],
+    [
+      4,
+      11,
+      2
+    ],
+    [
+      5,
+      2,
+      12
+    ],
+    [
+      6,
+      0,
+      188
+    ],
+    [
+      6,
+      1,
+      2
+    ],
+    [
+      6,
+      4,
+      23
+    ]
+  ]
+}

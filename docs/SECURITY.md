@@ -38,6 +38,16 @@ PUBLIC_ORIGIN is mandatory when the server binds beyond loopback. Set it to the 
 
 Addresses and ABIs are explicit in config and protocol source. Check the official current ENSv2 deployment table and source ABIs. Factory proxy verification identifies the expected implementation, not a security audit or a guarantee that it will never upgrade. This app does not grant an upgrade role for its newly created instances.
 
-The hand-written Keccak/ABI codec has local standard-vector and structural tests. A tested, maintained web3 SDK and official generated ABIs should replace it before production. ASCII-only names are a deliberate supported subset, not full ENS normalization. External CCIP-Read resolution, contract-wallet batch flows, reorg recovery, renewal UX and broad wallet compatibility remain unimplemented.
+The previous hand-written Keccak/ABI implementation has been replaced with pinned viem primitives. Live function definitions are generated from official ENS deployment artifacts; source hashes and the commit are recorded in `evidence/ens-abi-manifest.json`. Standard-vector and structural tests still run against the maintained implementation. This replacement is not a security audit. ASCII-only names are a deliberate supported subset, not full ENS normalization. External CCIP-Read resolution, contract-wallet batch flows, reorg recovery, renewal UX and broad wallet compatibility remain unimplemented.
 
 Live failure probes must be reviewed with actual contract errors. A network failure, nonexistent selector or arbitrary revert must not be presented as proof of correct authorization. The shipped probe labels it preflight and native RPC tests distinguish preflight failures from submitted transactions.
+
+A protected-model denial is reported only when the wallet supplies a decodable official `EACUnauthorizedAccountRoles` error matching the model key, TEXT role, and connected account. Generic reverts, JSON-RPC code 3, network failures, and errors for other resources are inconclusive. Confirmed transaction events retain the wallet receipt for journal export; the original desktop verification generated no signed receipts. The later user-approved Ada status grant and update receipts are recorded separately in `evidence/ada-sepolia.json`.
+
+## Existing Ada integration
+
+The Ada panel reads public Sepolia data only when requested, using the public RPC configured in `public/ada-sepolia.json`. It verifies the name-to-resolver route, official implementation and Sepolia chain before checking or preparing writes. Status grants use only `flyns.status`; they are resolver-wide for that key, not name-scoped. A status writer does not automatically gain checkpoint rights.
+
+The configured owner and runtime are required for their respective actions, with explicit wallet account selection and fresh guards before submission. No private keys are requested. Duplicate grants and identical status values skip signing. Model-denial evidence is accepted only with the matching EAC resource, TEXT role and runtime address. Model probes never submit transactions. Historical transaction links are evidence, not a cached assertion of current permission. Live reads and verification fail closed when the name redirects or broader roles are detected.
+
+The existing Ada model label does not satisfy the simulator's UUID/model-hash/checkpoint schema. An explicit owner-authorized migration and separately authorized checkpoint grant are required before claiming state portability for this name. No migration is performed by this integration.
