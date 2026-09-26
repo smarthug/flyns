@@ -1,0 +1,11 @@
+{
+  "@noble/curves": "1.9.1",
+  "@noble/hashes": "1.8.0",
+  "@scure/base": "1.2.6",
+  "@scure/bip32": "1.7.0",
+  "@scure/bip39": "1.6.0",
+  "abitype": "1.2.3",
+  "isows": "1.0.7",
+  "ox": "0.14.45",
+  "viem": "2.56.9"
+}

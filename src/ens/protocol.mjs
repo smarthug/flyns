@@ -1,5 +1,6 @@
 import {keccak,fromHex,toHex,utf8} from './keccak.mjs';
 import {tuple,array} from './abi.mjs';
+import {OFFICIAL_FUNCTIONS} from './official-abis.mjs';
 export const ZERO='0x'+'0'.repeat(40);
 export const CHECKPOINT_KEY='flyns.checkpoint';
 export const ROLE={REGISTRAR:1n,SET_PARENT:1n<<8n,RENEW:1n<<16n,SET_SUBREGISTRY:1n<<20n,SET_RESOLVER:1n<<24n,CAN_TRANSFER_ADMIN:1n<<156n};
@@ -22,26 +23,11 @@ export function dnsName(s){return toHex(Uint8Array.from([...normalizeName(s).spl
 export function namehash(s){let node=new Uint8Array(32);if(!s)return toHex(node);for(const l of normalizeName(s).split('.').reverse())node=fromHex(keccak(Uint8Array.from([...node,...fromHex(keccak(l))])));return toHex(node);}
 export const labelId=label=>BigInt(keccak(normalizeName(label)));
 export const setterResource=key=>BigInt(keccak(key));
-const GRANT=tuple('address','uint256');
-export const ABI={
-  deploy:{sig:'deployProxy(address,uint256,bytes)',in:['address','uint256','bytes'],out:['address']},
-  verify:{sig:'verifyContract(address)',in:['address'],out:['address']},
-  initRegistry:{sig:'initialize((address,uint256)[])',in:[array(GRANT)],out:[]},
-  initResolver:{sig:'initialize((address,uint256)[],bytes[])',in:[array(GRANT),array('bytes')],out:[]},
-  register:{sig:'register(string,address,address,address,uint256,uint64)',in:['string','address','address','address','uint256','uint64'],out:['uint256']},
-  setParent:{sig:'setParent(address,string)',in:['address','string'],out:[]},
-  setSubregistry:{sig:'setSubregistry(uint256,address)',in:['uint256','address'],out:[]},
-  state:{sig:'getState(uint256)',in:['uint256'],out:[tuple('uint8','uint64','address','uint256','uint256')]},
-  subregistry:{sig:'getSubregistry(string)',in:['string'],out:['address']},
-  resolver:{sig:'getResolver(string)',in:['string'],out:['address']},
-  hasRoles:{sig:'hasRoles(uint256,uint256,address)',in:['uint256','uint256','address'],out:['bool']},
-  hasRootRoles:{sig:'hasRootRoles(uint256,address)',in:['uint256','address'],out:['bool']},
-  setText:{sig:'setText(bytes,string,string)',in:['bytes','string','string'],out:[]},
-  setAddress:{sig:'setAddress(bytes,uint256,bytes)',in:['bytes','uint256','bytes'],out:[]},
-  grantSetter:{sig:'grantSetterRoles(bytes,address)',in:['bytes','address'],out:['bool']},
-  revoke:{sig:'revokeRoles(uint256,uint256,address)',in:['uint256','uint256','address'],out:['bool']},
-  link:{sig:'linkToNode(bytes,bytes32)',in:['bytes','bytes32'],out:[]},
-  resolve:{sig:'resolve(bytes,bytes)',in:['bytes','bytes'],out:['bytes','address']},
-  textProfile:{sig:'text(bytes32,string)',in:['bytes32','string'],out:['string']},
-  addrProfile:{sig:'addr(bytes32)',in:['bytes32'],out:['address']},
-};
+const typeOf = param => param.type.endsWith('[]') ? array(typeOf({...param, type:param.type.slice(0,-2)}))
+  : param.type === 'tuple' ? tuple(...param.components.map(typeOf)) : param.type;
+const signatureType = param => param.type.startsWith('tuple')
+  ? '(' + param.components.map(signatureType).join(',') + ')' + param.type.slice(5) : param.type;
+export const ABI = Object.fromEntries(Object.entries(OFFICIAL_FUNCTIONS).map(([key, fn]) => [key, {
+  sig: `${fn.name}(${fn.inputs.map(signatureType).join(',')})`,
+  in: fn.inputs.map(typeOf), out: fn.outputs.map(typeOf), abi: [fn],
+}]));

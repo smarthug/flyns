@@ -1,0 +1,4 @@
+# Preserve the upstream Three.js package bytes, including its whitespace.
+vendor/three/*.js -whitespace
+vendor/** linguist-vendored
+src/ens/official-abis.mjs linguist-generated

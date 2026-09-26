@@ -32,7 +32,7 @@ Search/open caches can expose different revisions of the deployment page, includ
 - Source data notice: https://github.com/cobanov/flyjump/blob/c08c86bc18efd8125964b1d2ca4fc1df59700f30/THIRD_PARTY_NOTICES.md
 - License: https://creativecommons.org/licenses/by/4.0/
 
-The shipped 12-neuron / 26-edge fixture is a manually selected subset of entries in that measured-data extraction. IDs, positions and selected edge counts are retained; this is **not** the complete induced graph among these cells. Selection is a delivery-size fixture, not a validated sensory pathway. Stimulus is injected directly into selected nodes as an engineered input. Source transmitter signs, the original FlyNS rate dynamics, target-sum normalization and motor decoding are modeling assumptions.
+The preserved `data/circuit-microfixture.json` 12-neuron / 26-edge fixture is a manually selected subset of entries in that measured-data extraction. IDs, positions and selected edge counts are retained; this is **not** the complete induced graph among these cells. Selection is a delivery-size fixture, not a validated sensory pathway. Stimulus is injected directly into selected nodes as an engineered input. Source transmitter signs, the original FlyNS rate dynamics, target-sum normalization and motor decoding are modeling assumptions.
 
 Data creators: FlyEM / HHMI Janelia, University of Cambridge, MRC Laboratory of Molecular Biology and Google Research. Upstream circuit extraction: Mert Cobanov / flyjump. No endorsement is implied.
 
@@ -41,3 +41,9 @@ The larger `data:fetch` script downloads measured circuit JSON only. It does not
 ## Application dependencies
 
 Core code: original MIT-licensed JavaScript using browser and Node APIs. Optional Three.js 0.180.0 is MIT; its vendoring script preserves its license. No font files are included. System fonts are used by the app. No official ENS frontend branding, fly-body artwork or game ROM is redistributed.
+
+## Desktop follow-up dependencies and data
+
+The active `data/circuit.json` is now the pinned upstream 80-neuron / 1,296-edge selected circuit. The original 12-neuron fixture is preserved separately. Provenance and the CC BY notice remain visible in both renderers.
+
+ABI/Keccak primitives: viem 2.56.9, bundled with esbuild 0.28.2. `vendor/web3/versions.json` lists the bundled-source dependencies; their licenses are retained in `vendor/web3/licenses/`. Official ENS ABI entries are generated from contracts-v2 commit `71a3b7339dbc55ab47667abdfe8303bac4f4c24e`; the ENS Labs MIT license is retained at `vendor/ens/LICENSE`. Playwright 1.63.0 is a development-only browser test dependency. Three.js 0.180.0 modules and MIT license are included at `vendor/three/`.

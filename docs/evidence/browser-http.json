@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-09-26T20:31:50.540Z",
+  "browser": "153.0.8010.12",
+  "node": "v24.19.0",
+  "environment": "Chromium over real loopback HTTP with real disk storage; local rehearsal identities and permissions",
+  "initialAgents": 3,
+  "afterHatch": 4,
+  "checkpointAndMigration": true,
+  "delegatedUpdate": true,
+  "otherAgentDenied": true,
+  "protectedModelDenied": true,
+  "revokedUpdateDenied": true,
+  "aliasResume": true,
+  "storageSurvivesServerRestart": true,
+  "independentCheckpointVerification": {
+    "freshContext": true,
+    "exactSubsequentSteps": 100,
+    "identitySource": "Explicit test metadata; NOT ENS name resolution"
+  },
+  "modelUpgradePreservesOldIdentities": true,
+  "threeJS": true,
+  "threeTiming": {
+    "medianFrameMs": 16.699999999999818,
+    "p95FrameMs": 16.799999999999727,
+    "sampleFrames": 90
+  },
+  "mobileWidth": 390,
+  "mobileOverflow": false,
+  "uncaughtErrors": [],
+  "limitations": "No deployed ENS transactions, independent ENS-name restoration, or public HTTPS deployment. Headless timing is not representative device performance."
+}

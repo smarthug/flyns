@@ -15,14 +15,14 @@ FlyNS is an identity and state-portability layer for experimental connectome age
 | Item | Current state |
 |---|---|
 | Public live demo URL | NOT DEPLOYED — replace with tested HTTPS endpoint |
-| Public GitHub repository | NOT CREATED/PUSHED — publish original source and honest commit history |
+| Public GitHub repository | https://github.com/smarthug/flyns — public repository verified; desktop validation changes are published as a reviewable branch |
 | Demo video | NOT RECORDED |
 | Team names and contact | ADD YOUR TEAM |
 | ENSv2 parent name | NOT REGISTERED BY THIS PACKAGE |
 | Colony UserRegistry / setup tx | NOT DEPLOYED |
 | Ada namespace / resolver / registration tx | NOT DEPLOYED |
 | Kibo resolver / registration tx | NOT DEPLOYED |
-| Public snapshot object + model SHA-256 | OBTAIN FROM DEPLOYED INSTANCE |
+| Public snapshot object + model SHA-256 | Model: `60d8a7561f74e210f967d9856e969ef26e51d8fd86e2feb473af60f4d653ce63`; public snapshot still required |
 | Checkpoint publish tx + resolver readback | NOT VERIFIED ON CHAIN |
 | Runtime grant tx | NOT VERIFIED ON CHAIN |
 | Successful delegated checkpoint tx | NOT VERIFIED ON CHAIN |
@@ -31,7 +31,7 @@ FlyNS is an identity and state-portability layer for experimental connectome age
 | Revoke tx + effective hasRoles=false | NOT VERIFIED ON CHAIN |
 | Post-revocation write denial | NOT VERIFIED ON CHAIN |
 | Wildcard alias tx + matching identity | NOT VERIFIED ON CHAIN |
-| Native tests | See VALIDATION.md |
+| Native tests | 53 passing; see VALIDATION.md and evidence/native-test-results.tap |
 | Separate-browser restoration | Must verify against live HTTPS storage and ENSv2 |
 
 ## Integration source pointers
@@ -48,3 +48,12 @@ FlyNS is an identity and state-portability layer for experimental connectome age
 Record time to first successful resolution and transaction, discrepancies between docs/ABI/deployed addresses, wallet friction, permission-scope surprises, and the most valuable improvement for ENS developers. Do not invent a successful integration debrief before running it.
 
 Do not fabricate transaction hashes, test results, ownership, historical commits, deployment URLs or claims that a localhost rehearsal satisfies the live-chain requirement.
+
+## Verified development evidence (not signed transaction evidence)
+
+- Five configured addresses matched pinned official artifacts and had deployed Sepolia code: `evidence/sepolia-code-check.json`.
+- Selected actual read-only contract calls with raw return data: `evidence/sepolia-read-check.json`.
+- Official ABI sources and hashes: `evidence/ens-abi-manifest.json`.
+- Real browser/HTTP/disk tests, Three.js, mobile width, server restart and independent checkpoint validation: `evidence/browser-http.json`.
+- A clean browser verified snapshot bytes with explicit test metadata and resumed 100 identical steps. This is **not** the required independent ENS-name restoration; that row remains incomplete.
+- HTTPS deployment configuration: `docs/DEPLOYMENT.md` (prepared, not deployed).

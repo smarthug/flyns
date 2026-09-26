@@ -61,7 +61,9 @@ Call `revokeRoles(checkpointKeyResource, ROLE_SET_TEXT, runtime)`. Then `hasRole
 
 `src/ens/local.mjs` intentionally simulates the policy without contracts. `src/ens/live.mjs` calls official deployments. Live sends preflight `eth_call`, ask the wallet for a transaction, and only report success after a status-1 receipt. A forbidden model-write probe is deliberately `eth_call` only, never a submitted destructive write.
 
-The small hand-written codec has standard-vector and nested-layout tests. It needs validation against the deployed beta ABI and is not audited. The native RPC tests use a mocked provider and do not prove these contracts were reached.
+ABI encoding and Keccak now use pinned viem primitives with standard-vector and nested-layout tests. `official-abis.mjs` is generated from the official deployment artifacts at commit `71a3b7339dbc55ab47667abdfe8303bac4f4c24e`; `evidence/ens-abi-manifest.json` records the sources and checksums. Twenty contract-function entries and two standard resolver profiles are available. The wallet transport remains custom and unaudited. Native RPC tests use a mocked provider and do not prove chain execution.
+
+The desktop follow-up verified code presence at all five configured addresses and actual read-only `getState`, `decodeSetter`, and `ROOT_REGISTRY` calls. See `evidence/sepolia-read-check.json` for raw bytes and block number. This does not prove registration, delegated writes, effective revocation, aliases, or fresh-client ENS restoration.
 
 ## Sources
 

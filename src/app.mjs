@@ -1,6 +1,8 @@
 import {LocalENS} from './ens/local.mjs';
 import {LiveENS} from './ens/live.mjs';
 import {WalletRPC} from './ens/rpc.mjs';
+import {permissionDenial} from './ens/authorization.mjs';
+import {setterResource,RESOLVER_ROLE} from './ens/protocol.mjs';
 import {FlyEngine,initialState} from './sim/engine.mjs';
 import {validateCircuit,ENGINE_CONFIG} from './sim/circuit.mjs';
 import {canonical,modelDigest,makeCheckpoint,sha256,verifyCheckpoint,safeCheckpointURL} from './sim/checkpoint.mjs';
@@ -46,8 +48,12 @@ function seedFrom(id){return [...id].reduce((s,c)=>(Math.imul(s,31)+c.charCodeAt
 function addAgent(meta,state=null){if(meta.modelHash!==modelHash)throw new Error('This agent uses a different model. Load the matching circuit before restoring.');const existing=agents.find(a=>a.meta.name===meta.name);if(existing)return existing;
   const a={meta,engine:new FlyEngine(graph,state||initialState(meta.agentId,seedFrom(meta.agentId),graph.nodes.length)),arena,paused:false,sequence:0,pointer:null,writer:meta.writer||false};agents.push(a);selected=meta.name;return a;}
 async function initLocal(){backend=new LocalENS(localStorage);$('actor').value='owner';agents=[];selected=null;arena='A';let metas=await backend.list();
-  if(!metas.length){for(const label of ['ada','kibo','mori'])metas.push(await backend.hatch(label,{agentId:crypto.randomUUID(),modelHash}));}
-  for(const meta of metas.slice(0,5)){if(meta.modelHash===modelHash)addAgent(meta);}
+  if(!metas.some(meta=>meta.modelHash===modelHash)){
+    const previousModels=metas.length>0;
+    for(const base of ['ada','kibo','mori']){const label=metas.some(meta=>meta.name===`${base}.${backend.baseName}`)?`${base}-${modelHash.slice(0,8)}`:base;metas.push(await backend.hatch(label,{agentId:crypto.randomUUID(),modelHash}));}
+    if(previousModels)journal('Circuit changed: new local identities created',{detail:'Previous names and checkpoints are preserved; restore them only with their matching graph and engine.'});
+  }
+  for(const meta of metas.filter(meta=>meta.modelHash===modelHash).slice(0,5))addAgent(meta);
   selected=agents[0]?.meta.name;render();journal('Local rehearsal ready',{detail:'No chain calls. No fabricated transaction receipts.'});
 }
 async function connect(){if(!window.ethereum)throw new Error('Install an injected Ethereum wallet to use Sepolia. Rehearsal needs no wallet.');
@@ -92,13 +98,13 @@ $('actor').onchange=()=>{if(backend.mode==='local'){backend.as($('actor').value)
 $('grantButton').onclick=()=>run(async()=>{const a=required(),account=backend.mode==='local'?null:runtimeAccount();a.writer=await backend.grant(a.meta,account);$('permissionResult').textContent='Delegated flyns.checkpoint only. Model, identity, aliases and other agents are not included.';journal('Checkpoint-only capability granted',{detail:a.meta.name});});
 $('revokeButton').onclick=()=>run(async()=>{const a=required(),account=backend.mode==='local'?null:runtimeAccount();await backend.revoke(a.meta,account);a.writer=false;$('permissionResult').textContent='Checkpoint writer revoked. Offchain simulation may continue; future canonical writes must fail.';journal('Checkpoint writer revoked',{detail:a.meta.name});});
 $('probeButton').onclick=()=>run(async()=>{const a=required();try{await backend.probeForbidden(a.meta);$('permissionResult').textContent='Probe would succeed: this actor is privileged. Switch to the separate delegated runtime wallet to demonstrate denial.';journal('Probe allowed — privileged actor',{detail:'eth_call only in live mode. No model record was changed.'});}
-  catch(e){const denial=e.message.includes('LOCAL DENIAL')||(/revert|execution reverted/i.test(e.message)||e.code===3);if(!denial)throw e;$('permissionResult').textContent='Protected model write denied. This was a local check / eth_call preflight, not a mined revert transaction.';journal('Protected write denied (preflight)',{detail:a.meta.name},'denied');}});
+  catch(e){const denial=backend.mode==='local'?e.message.includes('LOCAL DENIAL'):permissionDenial(e,{resource:setterResource('flyns.model.sha256'),role:RESOLVER_ROLE.TEXT,account:rpc.account});if(!denial)throw new Error('Permission probe inconclusive: expected ENS authorization error was not verified. '+e.message);$('permissionResult').textContent='Protected model write denied. This was a local check / eth_call preflight, not a mined revert transaction.';journal('Protected write denied (preflight)',{detail:a.meta.name,...(typeof denial==='object'?{authorization:denial}:{})},'denied');}});
 $('aliasButton').onclick=()=>run(async()=>{const a=required();a.alias=await backend.alias(a.meta);$('resumeName').value=a.alias;journal('Live record alias verified',{detail:`${a.alias} · wildcard record link, not a newly minted name`});});
 $('threeToggle').onchange=()=>run(async()=>{const useThree=$('threeToggle').checked;renderer.dispose();let canvas=$('arena'),fresh=canvas.cloneNode(false);canvas.replaceWith(fresh);
   try{renderer=useThree?await (await import('./ui/arena-three.mjs')).threeArena(fresh,select):canvasArena(fresh,select);$('rendererLabel').textContent=useThree?'THREE.JS OBSERVATORY':'CANVAS OBSERVATORY';}
   catch(e){const replacement=fresh.cloneNode(false);fresh.replaceWith(replacement);renderer=canvasArena(replacement,select);$('threeToggle').checked=false;$('rendererLabel').textContent='CANVAS OBSERVATORY';throw new Error('Optional Three.js bundle is not installed or WebGL is unavailable. Run npm run setup:3d, then reload.');}});
 $('exportJournal').onclick=()=>{const data={schema:'flyns.journal.v1',exportedAt:new Date().toISOString(),warning:'LOCAL events are not blockchain evidence. Preflight denials are not mined reverts.',events};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='flyns-journal.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-$('modelCount').textContent=`${graph.nodes.length} NEURONS · ${graph.edges.length} EDGES`;$('provenance').textContent=`${graph.nodes.length}-neuron selected-edge fixture · MaleCNS v1.0-derived data · CC BY 4.0. This is not the full brain. A larger pinned circuit can be imported with npm run data:fetch.`;
+$('modelCount').textContent=`${graph.nodes.length} NEURONS · ${graph.edges.length} EDGES`;$('provenance').textContent=`${graph.nodes.length}-neuron ${graph.nodes.length===12?'selected-edge fixture':'selected circuit'} · MaleCNS v1.0-derived data · CC BY 4.0. Engineered dynamics and inputs; this is not the full brain.`;
 await initLocal();const query=new URLSearchParams(location.search);if(query.has('resume'))$('resumeName').value=query.get('resume');if(query.get('arena')==='B')arena='B';render();
 let last=performance.now(),acc=0,uiLast=0;function frame(now){const delta=Math.min(.12,(now-last)/1000);last=now;acc+=delta;while(acc>=ENGINE_CONFIG.dt){for(const a of agents)if(!a.paused)a.engine.step();acc-=ENGINE_CONFIG.dt;}
   renderer.draw(agents.filter(a=>a.arena===arena),selected,now);if(now-uiLast>180){metrics();drawNeural($('neural'),graph,current()?.engine.state);uiLast=now;}requestAnimationFrame(frame);}requestAnimationFrame(frame);

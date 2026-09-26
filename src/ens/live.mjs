@@ -1,6 +1,6 @@
 import {ABI,ZERO,ROLE,RESOLVER_ROLE,REGISTRY_ROOT,OWNER_NAME_ROLES,RESOLVER_OWNER,CHECKPOINT_KEY,dnsName,namehash,labelId,setterResource,normalizeName} from './protocol.mjs';
-import {callData,decode} from './abi.mjs';
-import {keccak,toHex} from './keccak.mjs';
+import {contractCall,decode} from './abi.mjs';
+import {toHex} from './keccak.mjs';
 import {validatePointer} from '../sim/checkpoint.mjs';
 /** All live writes go to official ENSv2 contracts, never to a mock look-alike.
  * Tested locally against RPC fixtures; a funded Sepolia wallet is required for E2E verification.
@@ -44,7 +44,7 @@ export class LiveENS{
       registry=this.storage?.getItem(key)||ZERO;
       if(registry!==ZERO)await this.verifyProxy(registry,this.config.registryImplementation);
       else{
-        registry=await this.deploy(this.config.registryImplementation,callData(ABI.initRegistry.sig,ABI.initRegistry.in,[[[this.rpc.account,REGISTRY_ROOT]]]),'Create colony UserRegistry');
+        registry=await this.deploy(this.config.registryImplementation,contractCall(ABI.initRegistry,[[[this.rpc.account,REGISTRY_ROOT]]]),'Create colony UserRegistry');
         this.storage?.setItem(key,registry);
       }
       await this.rpc.send(registry,ABI.setParent,[this.config.ethRegistry,label],'Set colony canonical parent');
@@ -67,7 +67,7 @@ export class LiveENS{
       if(!job.resolver||resolver.toLowerCase()!==job.resolver.toLowerCase())throw new Error('Agent name is already registered');
     }
     if(!job.namespaceRegistry){
-      job.namespaceRegistry=await this.deploy(this.config.registryImplementation,callData(ABI.initRegistry.sig,ABI.initRegistry.in,[[[this.rpc.account,REGISTRY_ROOT]]]),`Create ${label} agent namespace`);save();
+      job.namespaceRegistry=await this.deploy(this.config.registryImplementation,contractCall(ABI.initRegistry,[[[this.rpc.account,REGISTRY_ROOT]]]),`Create ${label} agent namespace`);save();
     }else await this.verifyProxy(job.namespaceRegistry,this.config.registryImplementation);
     if(!job.resolver){
       const records={
@@ -76,9 +76,9 @@ export class LiveENS{
         'flyns.engine':'flyns-rate-v1','flyns.namespace':job.namespaceRegistry,
         'flyns.source':'MaleCNS v1.0 / see application data provenance',
       };
-      const calls=Object.entries(records).map(([k,v])=>callData(ABI.setText.sig,ABI.setText.in,[dnsName(name),k,v]));
-      calls.push(callData(ABI.setAddress.sig,ABI.setAddress.in,[dnsName(name),60n,this.rpc.account]));
-      job.resolver=await this.deploy(this.config.resolverImplementation,callData(ABI.initResolver.sig,ABI.initResolver.in,[[[this.rpc.account,RESOLVER_OWNER]],calls]),`Create isolated ${label} Permissioned Resolver`);save();
+      const calls=Object.entries(records).map(([k,v])=>contractCall(ABI.setText,[dnsName(name),k,v]));
+      calls.push(contractCall(ABI.setAddress,[dnsName(name),60n,this.rpc.account]));
+      job.resolver=await this.deploy(this.config.resolverImplementation,contractCall(ABI.initResolver,[[[this.rpc.account,RESOLVER_OWNER]],calls]),`Create isolated ${label} Permissioned Resolver`);save();
     }else await this.verifyProxy(job.resolver,this.config.resolverImplementation);
     if(current[0]!==2n){
       const [parent]=await this.rpc.read(this.config.ethRegistry,ABI.state,[labelId(this.baseName.split('.')[0])]);
@@ -92,7 +92,7 @@ export class LiveENS{
   }
   async profile(name,key){
     name=normalizeName(name);
-    const encoded=callData(ABI.textProfile.sig,ABI.textProfile.in,[namehash(name),key]);
+    const encoded=contractCall(ABI.textProfile,[namehash(name),key]);
     try{
       const [data,resolver]=await this.rpc.read(this.config.universalResolver,ABI.resolve,[dnsName(name),encoded]);
       return {value:decode(['string'],data)[0],resolver};
@@ -117,7 +117,7 @@ export class LiveENS{
     return confirmed;
   }
   async grant(agent,account){
-    const setter=callData(ABI.setText.sig,ABI.setText.in,['0x',CHECKPOINT_KEY,'']);
+    const setter=contractCall(ABI.setText,['0x',CHECKPOINT_KEY,'']);
     await this.rpc.send(agent.resolver,ABI.grantSetter,[setter,account],'Delegate checkpoint key only');
     return this.canWrite(agent,account);
   }
