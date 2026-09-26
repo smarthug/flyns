@@ -5,7 +5,7 @@
 
 An agent's simulated body is temporary; its canonical name identifies the model, checkpoint and authority that another runtime must verify. Hatch separate agents, observe real computed state, publish a checkpoint, resolve it by name, start a fresh engine and revoke its writer.
 
-**Delivery status (2026-09-27 JST):** the local rehearsal now passes native tests and a real Chromium → Node HTTP → disk test, including Three.js and the imported 80-neuron circuit. Five configured Sepolia addresses were checked against official artifacts and for deployed code; three read-only contract calls were verified. Signed deployment, registration, delegation and revocation are **not yet tested with funded wallets**. [The source repository is public](https://github.com/smarthug/flyns). Public HTTPS hosting and the final demo video remain outstanding. See [the evidence report](docs/VALIDATION.md).
+**Delivery status (2026-09-27 JST):** the local rehearsal now passes native tests and a real Chromium → Node HTTP → disk test, including Three.js and the imported 80-neuron circuit. Five configured Sepolia addresses were checked against official artifacts and for deployed code; three read-only contract calls were verified. User-approved Sepolia transactions now prove a **status-only grant and a delegated `exploring` update for `ada.flyns.eth`**, with a matching protected-model denial (`eth_call`). Signed checkpoint publication, revocation and the full registration/restore lifecycle remain unverified. [The source repository is public](https://github.com/smarthug/flyns). Public HTTPS hosting and the final demo video remain outstanding. See [the evidence report](docs/VALIDATION.md).
 
 ## Run
 
@@ -48,7 +48,7 @@ Re-fetches the active pinned **80-neuron** circuit data from cobanov/flyjump, no
 |---|---|
 | Hierarchical UserRegistry | Each fly is a registered name with its own child namespace |
 | Per-agent Permissioned Resolver | Isolate one fly's record permissions from all other flies |
-| Enhanced Access Control | Delegate only the `flyns.checkpoint` text-key setter |
+| Enhanced Access Control | Separate status-only and checkpoint-only text-key capabilities |
 | Universal Resolver | Discover canonical identity and checkpoint from an input name |
 | Record aliasing + wildcard resolution | `live.ada.parent.eth` resolves the canonical agent bundle without minting another name |
 | Verifiable Factory | Deploy official registry/resolver proxies and check their implementation |
@@ -67,6 +67,19 @@ The onchain checkpoint is **one atomic text value**, not separate URI and digest
 ```
 
 Full neural state, PRNG, body pose, environment and tick remain offchain. Restore verifies their bytes, model, stable agent ID and sequence before constructing a new engine. A content hash proves byte integrity, **not** scientifically correct computation or biological memory.
+
+## Existing Ada on Sepolia
+
+The **Ada on Sepolia** panel integrates the existing `ada.flyns.eth` Resolver without deploying or registering it again. Click **Read live Ada** to resolve current records through the Universal Resolver; no wallet is needed. **Verify status / model permissions** runs read-only calls from the configured runtime address.
+
+Connect **Ada runtime** to update `flyns.status` through your wallet. Owner controls can grant that key alone if it is missing. Already active grants and unchanged status values do not send duplicate transactions. Every write rechecks the exact account, Sepolia chain, canonical resolver, implementation and effective permissions. No key or seed phrase is stored.
+
+The existing model label (`male-cns-v1`) is **not** the simulator's model hash. Ada currently lacks the checkpoint identity fields used by Save & Resume, so it is not silently imported into the simulated colony. Status permission does not grant checkpoint access. See [the integration and actual receipts](docs/ADA-SEPOLIA.md).
+
+```sh
+npm ci
+npm run verify:ada  # read-only; rechecks both mined transactions and current permissions
+```
 
 ## Sepolia setup — required before prize submission
 

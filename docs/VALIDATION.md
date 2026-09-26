@@ -36,6 +36,15 @@ Results: [evidence/browser-http.json](evidence/browser-http.json). Screenshots f
 - The deployed resolver derived exactly the checkpoint-key resource and TEXT role expected by the app. The Universal Resolver proxy returned a root registry with deployed code.
 - No private keys, signatures, submitted transactions, funded wallets, or fabricated receipt IDs were used. These calls do **not** prove the complete live lifecycle.
 
+## Ada status integration (2026-09-27 JST)
+
+- **62 native tests passed, 0 failed**, and **33 JavaScript modules** syntax-checked. [Additional run output](evidence/ada-native-tests.txt). The added mocked-RPC tests cover wrong chain/name/implementation, unexpected root/admin/protected-key rights, precise error decoding, expected wallet selection, duplicate suppression, revoked access and protected-record readback.
+- The browser's integrated **Read live Ada** and **Verify status / model permissions** actions completed against the real Sepolia RPC. They displayed `exploring`, `male-cns-v1`, `drosophila`, status access allowed and model/checkpoint access denied. No extra signed transaction was requested during this UI check.
+- The original user-approved `grantSetterRoles` and runtime `setText` transactions were independently verified by `npm run verify:ada`, including calldata, sender, destination, chain, zero ETH value, successful receipts and matching role/text events. See [ADA-SEPOLIA.md](ADA-SEPOLIA.md) and [full evidence](evidence/ada-sepolia.json).
+- The model-denial probe is an actual read-only `eth_call` from the runtime address and returns the matching EAC error. It is not a mined revert.
+- The real HTTP browser regression test still covers checkpoint persistence, local rights, independent engine continuation, Three.js and mobile layout. It additionally checks that the Ada panel starts unloaded and local actions cannot enable its wallet buttons or fabricate onchain records. Results: [evidence/ada-browser-http.json](evidence/ada-browser-http.json).
+- This establishes status-only authority and an existing-name resolution path. Checkpoint identity metadata remains empty on Ada; no checkpoint schema migration, grant or restore was performed.
+
 ## Historical delivery environment — limitations retained
 
 The initial 2026-09-26 package was generated without external npm/Sepolia access. It passed 49 native tests and syntax checks for 21 modules. Its Chromium test ran in an isolated DOM with an in-memory fetch/storage adapter because browser loopback navigation was blocked. The HTTP server was tested independently. That original report is represented by `docs/native-test-results.tap` and `docs/browser-test-results.json`; `tests/browser-isolated.py` remains a separate historical harness.
@@ -44,8 +53,8 @@ The new desktop browser test removes the previous browser-to-HTTP validation gap
 
 ## Not executed / not proven
 
-- Signed ENSv2 factory proxy deployments, registration, Universal Resolver **agent-record** reads, successful delegated checkpoint transactions, grants/revocations, or aliases with funded wallets.
-- Real contract errors demonstrating protected-model, other-agent, and post-revocation write denial after the intended grant/revoke sequence.
+- Signed ENSv2 factory proxy deployments and registration from this app, successful delegated **checkpoint** transactions or checkpoint grants/revocations, and aliases with funded wallets. Existing Ada status/model/type reads and its status grant/write are now verified separately.
+- Other-agent and post-revocation write denial, and the simulator’s protected `flyns.model.sha256` denial after checkpoint delegation. The existing Ada `flyns.model` denial after status delegation is verified above.
 - ENS-based restoration in a clean independent client using publicly hosted checkpoint bytes.
 - Public HTTPS hosting, durable volume operations on a public host, TLS certificate issuance, or the prepared Docker Compose deployment (Docker/hosting access unavailable).
 - The final demo video and competition submission.

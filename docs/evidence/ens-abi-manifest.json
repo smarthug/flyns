@@ -49,6 +49,7 @@
     "state",
     "subregistry",
     "resolver",
+    "roles",
     "hasRoles",
     "hasRootRoles",
     "setText",

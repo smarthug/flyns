@@ -19,7 +19,8 @@
     "setup:web3": "node scripts/vendor-web3.mjs",
     "sync:ens-abi": "node scripts/sync-ens-abi.mjs",
     "test:browser": "node tests/browser-http.mjs",
-    "verify:sepolia:reads": "node scripts/verify-sepolia-reads.mjs"
+    "verify:sepolia:reads": "node scripts/verify-sepolia-reads.mjs",
+    "verify:ada": "node scripts/verify-ada-sepolia.mjs"
   },
   "license": "MIT",
   "devDependencies": {

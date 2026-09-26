@@ -268,6 +268,30 @@ export const OFFICIAL_FUNCTIONS = {
     "stateMutability": "view",
     "type": "function"
   },
+  "roles": {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "resource",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "roles",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
   "hasRoles": {
     "inputs": [
       {
@@ -544,3 +568,4 @@ export const OFFICIAL_FUNCTIONS = {
   }
 };
 export const PERMISSION_ERROR_ABI = [{"inputs":[{"internalType":"uint256","name":"resource","type":"uint256"},{"internalType":"uint256","name":"roleBitmap","type":"uint256"},{"internalType":"address","name":"account","type":"address"}],"name":"EACUnauthorizedAccountRoles","type":"error"}];
+export const RESOLVER_EVENTS = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"resource","type":"uint256"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"uint256","name":"oldRoleBitmap","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newRoleBitmap","type":"uint256"}],"name":"EACRolesChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"recordId","type":"uint256"},{"indexed":true,"internalType":"string","name":"keyHash","type":"string"},{"indexed":false,"internalType":"string","name":"key","type":"string"},{"indexed":false,"internalType":"string","name":"value","type":"string"}],"name":"TextUpdated","type":"event"}];

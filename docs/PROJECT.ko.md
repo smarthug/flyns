@@ -69,3 +69,9 @@ Resolver EAC 권한은 이름별이 아니라 해당 인스턴스의 레코드 �
 우승은 심사와 다른 출품작에 달려 있어 보장할 수 없다. 이 기획은 스폰서가 강조한 에이전트 네임스페이스·계층 registry·분리된 Resolver·세밀한 권한·aliasing을 하나의 사용자 행동으로 연결하는 전략이다.
 
 출처: `SOURCES.md`의 공식 해커톤 안내, ENSv2 문서, awesome-fly 및 데이터 원본. 금액·요건·beta 배포는 제출 직전에 다시 확인한다.
+
+### 실제 Ada 상태 권한 통합 (2026-09-27 JST)
+
+`ada.flyns.eth`의 기존 Resolver에서 status 키만 위임하고 runtime 지갑으로 `exploring`을 기록한 실제 Sepolia 거래를 확보했다. 앱 상단에서 실제 레코드 조회, status 업데이트, status/model 권한 검증을 실행할 수 있다. 모델 변경 실패는 `eth_call`이며 mined revert로 주장하지 않는다. 원본 영수증과 재검증 명령은 `ADA-SEPOLIA.md`에 있다.
+
+이 Ada에는 앱의 UUID·모델 SHA-256·checkpoint 레코드가 아직 없다. 따라서 실제 이름을 로컬 시뮬레이터에 연결해 복원하려면 소유자가 해당 메타데이터를 의도적으로 초기화하고 checkpoint 키를 별도로 위임하는 다음 단계가 필요하다. 현재 권한을 자동 확장하지 않는다.

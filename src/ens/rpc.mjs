@@ -4,8 +4,13 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
 export class WalletRPC{
   constructor(provider,onEvent=()=>{}){this.provider=provider;this.onEvent=onEvent;this.account=null;this.chainId=11155111;}
   async request(method,params=[]){if(!this.provider)throw new Error('No injected Ethereum wallet. Install a testnet wallet, then reload.');return this.provider.request({method,params});}
-  async connect(){
-    const accounts=await this.request('eth_requestAccounts');if(!accounts?.[0])throw new Error('No wallet account selected');
+  async connect({expectedAccount}={}){
+    let accounts=await this.request('eth_requestAccounts');if(!accounts?.[0])throw new Error('No wallet account selected');
+    if(expectedAccount && accounts[0].toLowerCase()!==expectedAccount.toLowerCase()){
+      await this.request('wallet_requestPermissions',[{eth_accounts:{}}]);
+      accounts=await this.request('eth_accounts');
+      if(accounts?.[0]?.toLowerCase()!==expectedAccount.toLowerCase())throw new Error(`Select only the required account in your wallet: ${expectedAccount}`);
+    }
     this.account=accounts[0].toLowerCase();
     if(Number(BigInt(await this.request('eth_chainId')))!==this.chainId)await this.request('wallet_switchEthereumChain',[{chainId:'0xaa36a7'}]);
     await this.guard();return this.account;
@@ -20,7 +25,7 @@ export class WalletRPC{
   }
   async simulate(address,fn,args=[]){await this.guard();return this.request('eth_call',[{from:this.account,to:address,data:contractCall(fn,args)},'latest']);}
   async send(address,fn,args=[],label=fn.sig){
-    await this.guard();const tx={from:this.account,to:address,data:contractCall(fn,args)};
+    await this.guard();const tx={from:this.account,to:address,data:contractCall(fn,args),value:'0x0',chainId:'0xaa36a7'};
     // eth_call is a preflight, not a submitted transaction and not proof of inclusion.
     await this.request('eth_call',[tx,'latest']);await this.guard();
     const hash=await this.request('eth_sendTransaction',[tx]);

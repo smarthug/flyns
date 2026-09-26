@@ -28,6 +28,10 @@ try {
   await page.waitForSelector('.agent-row');
   assert.equal(await page.locator('.agent-row').count(), 3);
   assert.equal(await text('modeBadge'), 'LOCAL REHEARSAL');
+  assert.equal(await text('adaName'), 'ada.flyns.eth');
+  assert.equal(await text('adaStatus'), '—');
+  assert.equal(await page.locator('#adaWrite').isEnabled(), false);
+  assert.equal(await page.locator('#adaGrant').isEnabled(), false);
   await page.waitForFunction(() => Number(document.getElementById('tick').textContent.replaceAll(',','')) > 5);
   await click('#pauseButton');
   await click('#checkpointButton');
@@ -69,6 +73,9 @@ try {
   await page.locator('#agentLabel').fill('yuki');
   await click('#hatchForm button');
   assert.equal(await page.locator('.agent-row').count(), 4);
+  assert.equal(await text('adaStatus'), '—'); // Local operations must not fabricate an onchain read.
+  assert.equal(await page.locator('#adaWrite').isEnabled(), false);
+  assert.equal(await page.locator('#adaGrant').isEnabled(), false);
 
   // Restart the actual HTTP server on the same origin and storage volume.
   await new Promise(resolve => server.close(resolve));
@@ -128,7 +135,7 @@ try {
   const result = {
     checkedAt:new Date().toISOString(),browser:browser.version(),node:process.version,
     environment:'Chromium over real loopback HTTP with real disk storage; local rehearsal identities and permissions',
-    initialAgents:3,afterHatch:4,checkpointAndMigration:true,delegatedUpdate:true,otherAgentDenied:true,
+    initialAgents:3,afterHatch:4,adaPanelIsolatedFromRehearsal:true,checkpointAndMigration:true,delegatedUpdate:true,otherAgentDenied:true,
     protectedModelDenied:true,revokedUpdateDenied:true,aliasResume:true,storageSurvivesServerRestart:true,
     independentCheckpointVerification:independent,modelUpgradePreservesOldIdentities:true,threeJS:true,threeTiming:timing,mobileWidth:390,mobileOverflow,
     uncaughtErrors:errors,limitations:'No deployed ENS transactions, independent ENS-name restoration, or public HTTPS deployment. Headless timing is not representative device performance.',

@@ -7,11 +7,13 @@ import {FlyEngine,initialState} from './sim/engine.mjs';
 import {validateCircuit,ENGINE_CONFIG} from './sim/circuit.mjs';
 import {canonical,modelDigest,makeCheckpoint,sha256,verifyCheckpoint,safeCheckpointURL} from './sim/checkpoint.mjs';
 import {canvasArena,drawNeural} from './ui/arena-canvas.mjs';
+import {mountStatusPanel} from './ui/status-panel.mjs';
 
 const $=id=>document.getElementById(id), short=s=>s&&s.length>24?s.slice(0,12)+'…'+s.slice(-8):s||'—';
-const [graph,config]=await Promise.all([fetch('/data/circuit.json').then(r=>r.json()),fetch('/public/config.json').then(r=>r.json())]);
+const [graph,config,adaTarget]=await Promise.all([fetch('/data/circuit.json').then(r=>r.json()),fetch('/public/config.json').then(r=>r.json()),fetch('/public/ada-sepolia.json').then(r=>r.json())]);
 validateCircuit(graph);const modelHash=await modelDigest(graph);
 let backend=new LocalENS(localStorage),rpc=null,agents=[],selected=null,arena='A',busy=false,renderer=canvasArena($('arena'),select),events=[];
+let statusPanel;
 let toastTimer;const notice=text=>{$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,7000);};
 function journal(label,details={},kind='info'){
   const e={timestamp:new Date().toISOString(),mode:backend.mode,kind,label,...details};events.unshift(e);events=events.slice(0,150);
@@ -29,7 +31,7 @@ async function run(action){if(busy)return;busy=true;document.body.classList.add(
 function select(name){selected=name;const a=current();if(a)arena=a.arena;render();}
 function render(){
   const a=current(),local=backend.mode==='local';$('modeBadge').textContent=local?'LOCAL REHEARSAL':'SEPOLIA · LIVE CONTRACTS';
-  $('modeDescription').textContent=local?'No blockchain transactions. Names ending in .demo are local examples.':'Real ENSv2 calls. Every write requires a wallet confirmation; test ETH only.';
+  $('modeDescription').textContent=local?'The observatory uses local .demo names. The Ada panel connects to Sepolia separately.':'Real ENSv2 calls. Every write requires a wallet confirmation; test ETH only.';
   $('localMode').classList.toggle('active',local);$('liveMode').classList.toggle('active',!local);$('actor').disabled=!local||busy;
   $('actorAddress').textContent=local?'Local rehearsal actor':short(rpc?.account);
   $('arenaA').classList.toggle('active',arena==='A');$('arenaB').classList.toggle('active',arena==='B');$('arenaLabel').textContent=`ARENA ${arena} / ${local?'LOCAL':'SEPOLIA'}`;
@@ -41,7 +43,7 @@ function render(){
   for(const [id,value] of [['modelHash',a?.meta.modelHash||modelHash],['resolverAddress',a?.meta.resolver],['namespaceAddress',a?.meta.namespaceRegistry]]){$(id).textContent=short(value);$(id).title=value||'';}
   $('pauseButton').textContent=a?.paused?'Resume selected':'Pause selected';$('aliasResult').textContent=a?.alias||'';
   $('checkpointPermission').textContent=a?.writer?'Allowed (key only)':'Not granted / unchecked';$('checkpointPermission').className=a?.writer?'yes':'no';
-  $('resumeName').placeholder=local?'ada.flyns.demo':'ada.your-name.eth';metrics();
+  $('resumeName').placeholder=local?'ada.flyns.demo':'ada.your-name.eth';metrics();statusPanel?.render();
 }
 function metrics(){const a=current(),s=a?.engine.state;$('tick').textContent=s?s.tick.toLocaleString('en-US'):'—';$('activity').textContent=s?(s.neural.reduce((x,y)=>x+y,0)/s.neural.length).toFixed(3):'—';$('energy').textContent=s?(s.energy*100).toFixed(1)+'%':'—';$('runningCount').textContent=agents.filter(a=>a.arena===arena&&!a.paused).length;}
 function seedFrom(id){return [...id].reduce((s,c)=>(Math.imul(s,31)+c.charCodeAt(0))>>>0,2166136261)||1;}
@@ -105,6 +107,7 @@ $('threeToggle').onchange=()=>run(async()=>{const useThree=$('threeToggle').chec
   catch(e){const replacement=fresh.cloneNode(false);fresh.replaceWith(replacement);renderer=canvasArena(replacement,select);$('threeToggle').checked=false;$('rendererLabel').textContent='CANVAS OBSERVATORY';throw new Error('Optional Three.js bundle is not installed or WebGL is unavailable. Run npm run setup:3d, then reload.');}});
 $('exportJournal').onclick=()=>{const data={schema:'flyns.journal.v1',exportedAt:new Date().toISOString(),warning:'LOCAL events are not blockchain evidence. Preflight denials are not mined reverts.',events};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='flyns-journal.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('modelCount').textContent=`${graph.nodes.length} NEURONS · ${graph.edges.length} EDGES`;$('provenance').textContent=`${graph.nodes.length}-neuron ${graph.nodes.length===12?'selected-edge fixture':'selected circuit'} · MaleCNS v1.0-derived data · CC BY 4.0. Engineered dynamics and inputs; this is not the full brain.`;
+statusPanel=mountStatusPanel({config,target:adaTarget,run,journal});
 await initLocal();const query=new URLSearchParams(location.search);if(query.has('resume'))$('resumeName').value=query.get('resume');if(query.get('arena')==='B')arena='B';render();
 let last=performance.now(),acc=0,uiLast=0;function frame(now){const delta=Math.min(.12,(now-last)/1000);last=now;acc+=delta;while(acc>=ENGINE_CONFIG.dt){for(const a of agents)if(!a.paused)a.engine.step();acc-=ENGINE_CONFIG.dt;}
   renderer.draw(agents.filter(a=>a.arena===arena),selected,now);if(now-uiLast>180){metrics();drawNeural($('neural'),graph,current()?.engine.state);uiLast=now;}requestAnimationFrame(frame);}requestAnimationFrame(frame);

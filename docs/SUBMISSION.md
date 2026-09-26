@@ -18,20 +18,22 @@ FlyNS is an identity and state-portability layer for experimental connectome age
 | Public GitHub repository | https://github.com/smarthug/flyns — public repository verified; desktop validation changes: https://github.com/smarthug/flyns/pull/1 |
 | Demo video | NOT RECORDED |
 | Team names and contact | ADD YOUR TEAM |
-| ENSv2 parent name | NOT REGISTERED BY THIS PACKAGE |
+| ENSv2 parent name | Existing `flyns.eth`; registration not performed by this package |
 | Colony UserRegistry / setup tx | NOT DEPLOYED |
-| Ada namespace / resolver / registration tx | NOT DEPLOYED |
+| Ada namespace / resolver / registration tx | Existing `ada.flyns.eth` resolver `0xEC944748828366EE926C35bA8751BB3a59DDa508` verified; registration/namespace setup receipts not collected |
 | Kibo resolver / registration tx | NOT DEPLOYED |
 | Public snapshot object + model SHA-256 | Model: `60d8a7561f74e210f967d9856e969ef26e51d8fd86e2feb473af60f4d653ce63`; public snapshot still required |
 | Checkpoint publish tx + resolver readback | NOT VERIFIED ON CHAIN |
-| Runtime grant tx | NOT VERIFIED ON CHAIN |
+| Runtime status-only grant tx | [Confirmed grant](https://sepolia.etherscan.io/tx/0x0ac9b59ddfa2a5ad5b8d8c924ff1af6cc3996842f10013ee719935d65f882491); grants `flyns.status`, not checkpoint |
+| Runtime checkpoint grant tx | NOT VERIFIED ON CHAIN |
+| Successful delegated status tx | [Confirmed exploring update](https://sepolia.etherscan.io/tx/0xb5e4ce094274717f9a1e41a6a3d2a41134f8a13df9b75d5d586dbd2eb86ff746) |
 | Successful delegated checkpoint tx | NOT VERIFIED ON CHAIN |
-| Protected model eth_call denial | NOT VERIFIED ON CHAIN; label preflight, not mined revert |
+| Protected model eth_call denial | `flyns.model` denial verified after status grant; matching EAC error, **not mined revert**. Checkpoint-flow `flyns.model.sha256` probe remains separate |
 | Other-agent checkpoint denial | NOT VERIFIED ON CHAIN |
 | Revoke tx + effective hasRoles=false | NOT VERIFIED ON CHAIN |
 | Post-revocation write denial | NOT VERIFIED ON CHAIN |
 | Wildcard alias tx + matching identity | NOT VERIFIED ON CHAIN |
-| Native tests | 53 passing; see VALIDATION.md and evidence/native-test-results.tap |
+| Native tests | 62 passing; see VALIDATION.md and evidence/ada-native-tests.txt |
 | Separate-browser restoration | Must verify against live HTTPS storage and ENSv2 |
 
 ## Integration source pointers
@@ -57,3 +59,7 @@ Do not fabricate transaction hashes, test results, ownership, historical commits
 - Real browser/HTTP/disk tests, Three.js, mobile width, server restart and independent checkpoint validation: `evidence/browser-http.json`.
 - A clean browser verified snapshot bytes with explicit test metadata and resumed 100 identical steps. This is **not** the required independent ENS-name restoration; that row remains incomplete.
 - HTTPS deployment configuration: `docs/DEPLOYMENT.md` (prepared, not deployed).
+
+## Verified wallet evidence: status scope only
+
+The [Ada integration report](ADA-SEPOLIA.md) and [receipt/readback JSON](evidence/ada-sepolia.json) record the user-approved status grant and update plus actual read-only model denial. These are stronger than the earlier read-only ABI checks, but do not establish checkpoint portability or the full prize demo. Ada’s model label is not a simulator hash, and the required UUID/checkpoint metadata is still empty.

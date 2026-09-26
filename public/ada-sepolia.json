@@ -1,0 +1,10 @@
+{
+  "chainId": 11155111,
+  "name": "ada.flyns.eth",
+  "resolver": "0xEC944748828366EE926C35bA8751BB3a59DDa508",
+  "owner": "0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE",
+  "runtime": "0x353824959E9E4993FCF42eB26FA214E2439a08f1",
+  "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+  "grantTransaction": "0x0ac9b59ddfa2a5ad5b8d8c924ff1af6cc3996842f10013ee719935d65f882491",
+  "statusTransaction": "0xb5e4ce094274717f9a1e41a6a3d2a41134f8a13df9b75d5d586dbd2eb86ff746"
+}
