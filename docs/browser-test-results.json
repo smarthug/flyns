@@ -1,0 +1,12 @@
+{
+  "environment": "Isolated Chromium DOM with in-memory fetch adapter; real HTTP tested independently",
+  "uncaughtErrors": [],
+  "initialAgents": 3,
+  "afterHatch": 4,
+  "checkpointAndMigration": true,
+  "grantRevoke": true,
+  "forbiddenProbe": true,
+  "aliasResume": true,
+  "mobileOverflow": false,
+  "resumeProof": "Verified SHA-256, identity, model and sequence 3. Fresh engine restored at tick 28, PRNG 3595187942."
+}

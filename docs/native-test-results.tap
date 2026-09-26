@@ -1,0 +1,308 @@
+
+> flyns@0.1.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: Keccak-256 standard empty vector
+ok 1 - Keccak-256 standard empty vector
+  ---
+  duration_ms: 1.330939
+  type: 'test'
+  ...
+# Subtest: Keccak-256 abc vector
+ok 2 - Keccak-256 abc vector
+  ---
+  duration_ms: 0.478428
+  type: 'test'
+  ...
+# Subtest: Ethereum function selector known vector
+ok 3 - Ethereum function selector known vector
+  ---
+  duration_ms: 0.745449
+  type: 'test'
+  ...
+# Subtest: ENS namehash known eth vector
+ok 4 - ENS namehash known eth vector
+  ---
+  duration_ms: 1.077388
+  type: 'test'
+  ...
+# Subtest: DNS wire encoding includes byte lengths and terminator
+ok 5 - DNS wire encoding includes byte lengths and terminator
+  ---
+  duration_ms: 0.263045
+  type: 'test'
+  ...
+# Subtest: Normalization is intentionally ASCII-only, not Unicode approximation
+ok 6 - Normalization is intentionally ASCII-only, not Unicode approximation
+  ---
+  duration_ms: 0.296455
+  type: 'test'
+  ...
+# Subtest: Strict input hex validation
+ok 7 - Strict input hex validation
+  ---
+  duration_ms: 0.18613
+  type: 'test'
+  ...
+# Subtest: Static ABI matches fixed known layout
+ok 8 - Static ABI matches fixed known layout
+  ---
+  duration_ms: 0.316456
+  type: 'test'
+  ...
+# Subtest: String ABI uses 32-byte offset, byte length and padding
+ok 9 - String ABI uses 32-byte offset, byte length and padding
+  ---
+  duration_ms: 0.703026
+  type: 'test'
+  ...
+# Subtest: Nested resolver initializer round trip
+ok 10 - Nested resolver initializer round trip
+  ---
+  duration_ms: 1.199682
+  type: 'test'
+  ...
+# Subtest: Static getState tuple round trip
+ok 11 - Static getState tuple round trip
+  ---
+  duration_ms: 0.249976
+  type: 'test'
+  ...
+# Subtest: ABI rejects bad addresses, arity and overflowing uint64
+ok 12 - ABI rejects bad addresses, arity and overflowing uint64
+  ---
+  duration_ms: 0.246129
+  type: 'test'
+  ...
+# Subtest: ABI rejects truncated and invalid bool results
+ok 13 - ABI rejects truncated and invalid bool results
+  ---
+  duration_ms: 0.132959
+  type: 'test'
+  ...
+# Subtest: Key permission resource is key keccak, not agent namehash
+ok 14 - Key permission resource is key keccak, not agent namehash
+  ---
+  duration_ms: 1.420223
+  type: 'test'
+  ...
+# Subtest: Circuit validation rejects invented invalid edge indices
+ok 15 - Circuit validation rejects invented invalid edge indices
+  ---
+  duration_ms: 0.391979
+  type: 'test'
+  ...
+# Subtest: Circuit validation rejects duplicate directed edges
+ok 16 - Circuit validation rejects duplicate directed edges
+  ---
+  duration_ms: 0.212109
+  type: 'test'
+  ...
+# Subtest: Separate identical seeded runtimes are deterministic
+ok 17 - Separate identical seeded runtimes are deterministic
+  ---
+  duration_ms: 9.99303
+  type: 'test'
+  ...
+# Subtest: Each agent owns an independent neural array and PRNG state
+ok 18 - Each agent owns an independent neural array and PRNG state
+  ---
+  duration_ms: 0.278378
+  type: 'test'
+  ...
+# Subtest: Measured circuit edges affect this engineered model, not a biological validation
+ok 19 - Measured circuit edges affect this engineered model, not a biological validation
+  ---
+  duration_ms: 2.823972
+  type: 'test'
+  ...
+# Subtest: Canonical object order is stable
+ok 20 - Canonical object order is stable
+  ---
+  duration_ms: 0.111657
+  type: 'test'
+  ...
+# Subtest: Canonical JSON rejects nonfinite values
+ok 21 - Canonical JSON rejects nonfinite values
+  ---
+  duration_ms: 0.098578
+  type: 'test'
+  ...
+# Subtest: Model digest includes graph and engine configuration
+ok 22 - Model digest includes graph and engine configuration
+  ---
+  duration_ms: 7.784974
+  type: 'test'
+  ...
+# Subtest: Verified checkpoint preserves next 100 exact simulation steps
+ok 23 - Verified checkpoint preserves next 100 exact simulation steps
+  ---
+  duration_ms: 4.646579
+  type: 'test'
+  ...
+# Subtest: Tampered checkpoint bytes are rejected
+ok 24 - Tampered checkpoint bytes are rejected
+  ---
+  duration_ms: 1.935728
+  type: 'test'
+  ...
+# Subtest: Different agent identity is rejected
+ok 25 - Different agent identity is rejected
+  ---
+  duration_ms: 1.629979
+  type: 'test'
+  ...
+# Subtest: Different model is rejected
+ok 26 - Different model is rejected
+  ---
+  duration_ms: 2.099454
+  type: 'test'
+  ...
+# Subtest: Stale checkpoint sequence is rejected
+ok 27 - Stale checkpoint sequence is rejected
+  ---
+  duration_ms: 2.01699
+  type: 'test'
+  ...
+# Subtest: Pointer and snapshot sequence must agree
+ok 28 - Pointer and snapshot sequence must agree
+  ---
+  duration_ms: 1.964942
+  type: 'test'
+  ...
+# Subtest: Checkpoint validation catches dimensions and poisoned neural values
+ok 29 - Checkpoint validation catches dimensions and poisoned neural values
+  ---
+  duration_ms: 1.902688
+  type: 'test'
+  ...
+# Subtest: Checkpoint rejects zero PRNG, unsupported schema and infinite pose
+ok 30 - Checkpoint rejects zero PRNG, unsupported schema and infinite pose
+  ---
+  duration_ms: 1.59828
+  type: 'test'
+  ...
+# Subtest: Checkpoint URLs must be HTTPS or same-origin localhost
+ok 31 - Checkpoint URLs must be HTTPS or same-origin localhost
+  ---
+  duration_ms: 0.24656
+  type: 'test'
+  ...
+# Subtest: Local rights: runtime cannot create identities
+ok 32 - Local rights: runtime cannot create identities
+  ---
+  duration_ms: 1.413273
+  type: 'test'
+  ...
+# Subtest: Local rights: delegation applies to exactly one resolver
+ok 33 - Local rights: delegation applies to exactly one resolver
+  ---
+  duration_ms: 0.374753
+  type: 'test'
+  ...
+# Subtest: Local rights: checkpoint grant does not permit model changes
+ok 34 - Local rights: checkpoint grant does not permit model changes
+  ---
+  duration_ms: 0.308944
+  type: 'test'
+  ...
+# Subtest: Local rights: revoke blocks subsequent canonical writes
+ok 35 - Local rights: revoke blocks subsequent canonical writes
+  ---
+  duration_ms: 0.82535
+  type: 'test'
+  ...
+# Subtest: Local aliases follow current records, not a copied snapshot
+ok 36 - Local aliases follow current records, not a copied snapshot
+  ---
+  duration_ms: 0.318849
+  type: 'test'
+  ...
+# Subtest: Local runtime cannot mint or relink aliases
+ok 37 - Local runtime cannot mint or relink aliases
+  ---
+  duration_ms: 0.735445
+  type: 'test'
+  ...
+# Subtest: Live RPC guard rejects wrong chain before signing
+ok 38 - Live RPC guard rejects wrong chain before signing
+  ---
+  duration_ms: 0.50588
+  type: 'test'
+  ...
+# Subtest: Live RPC guard rejects account switches before signing
+ok 39 - Live RPC guard rejects account switches before signing
+  ---
+  duration_ms: 0.255875
+  type: 'test'
+  ...
+# Subtest: Failed eth_call preflight is not submitted or counted as a mined revert
+ok 40 - Failed eth_call preflight is not submitted or counted as a mined revert
+  ---
+  duration_ms: 1.242947
+  type: 'test'
+  ...
+# Subtest: Live RPC only marks confirmed after success receipt (mock transport)
+ok 41 - Live RPC only marks confirmed after success receipt (mock transport)
+  ---
+  duration_ms: 1.071309
+  type: 'test'
+  ...
+# Subtest: Reverted receipt is never marked successful (mock transport)
+ok 42 - Reverted receipt is never marked successful (mock transport)
+  ---
+  duration_ms: 1.106923
+  type: 'test'
+  ...
+# Subtest: Server health reports the actual storage backend
+ok 43 - Server health reports the actual storage backend
+  ---
+  duration_ms: 32.979388
+  type: 'test'
+  ...
+# Subtest: Server stores immutable bytes and returns their actual SHA-256
+ok 44 - Server stores immutable bytes and returns their actual SHA-256
+  ---
+  duration_ms: 18.827421
+  type: 'test'
+  ...
+# Subtest: Repeated content uploads are idempotent
+ok 45 - Repeated content uploads are idempotent
+  ---
+  duration_ms: 8.945196
+  type: 'test'
+  ...
+# Subtest: Server rejects foreign-origin uploads
+ok 46 - Server rejects foreign-origin uploads
+  ---
+  duration_ms: 3.406677
+  type: 'test'
+  ...
+# Subtest: Server rejects invalid checkpoint JSON and schemas
+ok 47 - Server rejects invalid checkpoint JSON and schemas
+  ---
+  duration_ms: 6.364621
+  type: 'test'
+  ...
+# Subtest: Secrets and non-asset paths are never served
+ok 48 - Secrets and non-asset paths are never served
+  ---
+  duration_ms: 7.733456
+  type: 'test'
+  ...
+# Subtest: Served HTML has a restrictive script CSP
+ok 49 - Served HTML has a restrictive script CSP
+  ---
+  duration_ms: 2.875049
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 153.175519

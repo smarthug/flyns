@@ -1,0 +1,11 @@
+import {readFile,writeFile,copyFile} from 'node:fs/promises';import {validateCircuit} from '../src/sim/circuit.mjs';import {modelDigest} from '../src/sim/checkpoint.mjs';
+const commit='c08c86bc18efd8125964b1d2ca4fc1df59700f30';
+const url=`https://raw.githubusercontent.com/cobanov/flyjump/${commit}/src/data/connectome.json`;
+console.log('Fetching a pinned measured circuit, not application/template code:',url);
+const r=await fetch(url,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`Upstream HTTP ${r.status}`);
+const text=await r.text();if(text.length>2000000)throw new Error('Unexpected oversized circuit');const graph=validateCircuit(JSON.parse(text));
+if(graph.nodes.length!==80)throw new Error('Pinned circuit size changed unexpectedly; inspect rather than silently accepting');
+graph.provenance={dataset:'MaleCNS v1.0',license:'CC BY 4.0',source:url,upstreamCommit:commit,creators:'FlyEM / HHMI Janelia; University of Cambridge; MRC LMB; Google Research',extraction:'Mert Cobanov / flyjump',modifications:'Source nodes and edge counts retained. Original FlyNS engine normalizes incoming counts; transmitter signs and sensory/motor mappings are modeling assumptions. No application code or pretrained readout copied.'};
+const path=new URL('../data/circuit.json',import.meta.url);const before=JSON.parse(await readFile(path,'utf8'));if(before.nodes.length===12)await copyFile(path,new URL('../data/circuit-microfixture.json',import.meta.url));
+await writeFile(path,JSON.stringify(graph,null,2)+'\n');console.log(`${graph.nodes.length} neurons, ${graph.edges.length} directed edges. Model SHA-256 ${await modelDigest(graph)}`);
+console.log('Model hash changed: use new names/identities or the matching old graph for old snapshots. This is still a circuit subset, not a full brain.');

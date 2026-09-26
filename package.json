@@ -1,0 +1,21 @@
+{
+  "name": "flyns",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portable connectome agents with ENSv2 namespaces and revocable checkpoint writers",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env server.mjs",
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "data:fetch": "node scripts/fetch-connectome.mjs",
+    "verify:sepolia": "node scripts/verify-sepolia.mjs",
+    "setup:3d": "npm install --no-save --package-lock=false three@0.180.0 && node scripts/vendor-three.mjs"
+  },
+  "license": "MIT"
+}
