@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {decodeFunctionData} from 'viem';
+import {selector} from '../src/ens/keccak.mjs';
 import {StatusENS, STATUS_KEY, statusSetter} from '../src/ens/status.mjs';
 import {WalletRPC} from '../src/ens/rpc.mjs';
 import {ABI, dnsName, setterResource, RESOLVER_ROLE} from '../src/ens/protocol.mjs';
@@ -9,7 +9,11 @@ import {encode, decode, callData} from '../src/ens/abi.mjs';
 
 const config = JSON.parse(readFileSync(new URL('../public/config.json', import.meta.url)));
 const target = JSON.parse(readFileSync(new URL('../public/ada-sepolia.json', import.meta.url)));
-const fullABI = Object.values(ABI).flatMap(fn => fn.abi);
+const decodeCall = data => {
+  const fn = Object.values(ABI).find(fn => selector(fn.sig) === data.slice(0,10));
+  assert.ok(fn, 'Unexpected contract selector');
+  return {functionName:fn.abi[0].name, args:decode(fn.in, '0x'+data.slice(10))};
+};
 function fixture(options = {}) {
   const state = {granted:true, root:0n, statusRoles:16n, resolver:target.resolver, implementation:config.resolverImplementation, ...options};
   const records = {[STATUS_KEY]:'exploring', 'flyns.model':'male-cns-v1', 'agent.type':'drosophila'};
@@ -21,11 +25,11 @@ function fixture(options = {}) {
     if (method === 'eth_blockNumber') return '0x123';
     if (method === 'eth_getCode') return '0x1234';
     assert.equal(method, 'eth_call'); assert.equal(params[1], '0x123', 'All reads/probes must use the same recorded block');
-    const {functionName:name, args} = decodeFunctionData({abi:fullABI, data:params[0].data});
+    const {functionName:name, args} = decodeCall(params[0].data);
     if (name === 'verifyContract') return encode(['address'], [state.implementation]);
     if (name === 'decodeSetter') return encode(ABI.decodeSetter.out, ['0x666c796e732e737461747573', setterResource(STATUS_KEY), state.wrongRole ? 1n : 16n]);
     if (name === 'resolve') {
-      const {args:[,key]} = decodeFunctionData({abi:ABI.textProfile.abi, data:args[1]});
+      const {args:[,key]} = decodeCall(args[1]);
       assert.equal(args[0], dnsName(target.name));
       return encode(ABI.resolve.out, [encode(['string'], [records[key] || '']), state.resolver]);
     }
@@ -73,7 +77,7 @@ test('Status grant encodes exactly one text key for the expected runtime; repeat
   const f=fixture({granted:false,statusRoles:0n}); await f.ens.grant(f.wallet(target.owner));
   assert.equal(f.sends.length,1); assert.equal(f.sends[0].to,target.resolver);assert.equal(f.sends[0].fn,ABI.grantSetter);
   assert.equal(f.sends[0].args[1],target.runtime);
-  assert.deepEqual(decodeFunctionData({abi:ABI.setText.abi,data:f.sends[0].args[0]}).args,['0x',STATUS_KEY,'']);
+  assert.deepEqual(decodeCall(f.sends[0].args[0]).args,['0x',STATUS_KEY,'']);
   assert.equal(f.sends[0].args[0],statusSetter());
   assert.equal((await f.ens.grant(f.wallet(target.owner))).skipped,true);assert.equal(f.sends.length,1);
 });
