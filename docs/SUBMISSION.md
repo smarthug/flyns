@@ -15,7 +15,7 @@ FlyNS is an identity and state-portability layer for experimental connectome age
 | Item | Current state |
 |---|---|
 | Public live demo URL | NOT DEPLOYED — replace with tested HTTPS endpoint |
-| Public GitHub repository | https://github.com/smarthug/flyns — public repository verified; desktop validation changes are published as a reviewable branch |
+| Public GitHub repository | https://github.com/smarthug/flyns — public repository verified; desktop validation changes: https://github.com/smarthug/flyns/pull/1 |
 | Demo video | NOT RECORDED |
 | Team names and contact | ADD YOUR TEAM |
 | ENSv2 parent name | NOT REGISTERED BY THIS PACKAGE |

@@ -51,7 +51,7 @@ The new desktop browser test removes the previous browser-to-HTTP validation gap
 - The final demo video and competition submission.
 - Production security audit, broad wallet compatibility, cross-platform bit-identical numerical behavior, or biological validation.
 
-The public source repository exists at https://github.com/smarthug/flyns. A CI workflow is included for native tests, build, bundle reproduction and the real HTTP browser test; local passes do not by themselves prove a successful GitHub Actions run.
+The public source repository exists at https://github.com/smarthug/flyns. The expanded GitHub Actions workflow passed on Ubuntu for commit `0250980e36fb7f3cc05dd017302dab634218e168`, including clean dependency installation, bundle reproduction, native tests, build and the real HTTP browser test. See [the actual run](https://github.com/smarthug/flyns/actions/runs/36270116054) and [recorded job/step results](evidence/github-ci.json). This CI result is separate from the desktop run and does not validate deployed ENS transactions or public hosting.
 
 ## Acceptance gate for submission
 
